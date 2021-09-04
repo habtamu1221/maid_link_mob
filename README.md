@@ -1,16 +1,24 @@
 # maidlink
+Advanced Mobile Programming Project 
 
-A new Flutter project.
 
-## Getting Started
+## Description :
+ Maid Link a mobile application for Maids and Clients to act as a link between clients who needs a maid to hire and Maids.
 
-This project is a starting point for a Flutter application.
+#### Features : 
+1. Authentication and Authorization 
+2. CRUD on Maids 
+3. CRUD on ADMINS 
+4. CRUD on Users( Clients or Employers )
+5. Rating
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+###### Group members Name : 
+1. Habtamu Girma       ATR/2402/09
+2. Abel Teshome        ATR/5304/09
+3. Amanuel Bullo       ATR/5138/09
+4. Bezawit Dereje      ATE/5135/09
+5. Elbethel Solomon    ATE/5149/09
+
+

@@ -1,8 +1,8 @@
+import 'package:image_picker/image_picker.dart';
 import '../../libs.dart';
-import 'dart:io';
 
-Future<void> pickImage(BuildContext context) async {
-  File image;
+Future<XFile?> pickImage(BuildContext context) async {
+  XFile? image;
   await showDialog(
     context: context,
     builder: (conta) {
@@ -42,8 +42,9 @@ Future<void> pickImage(BuildContext context) async {
                 color: Colors.white,
               ),
               onTap: () async {
-                image = await ImagePicker.pickImage(
-                    source: ImageSource.camera, imageQuality: 50);
+                image = await ImagePicker().pickImage(
+                    source: ImageSource.camera, imageQuality: 50) as XFile;
+                Navigator.pop(conta);
               },
             ),
             Container(
@@ -56,8 +57,9 @@ Future<void> pickImage(BuildContext context) async {
                   color: Colors.white,
                 ),
                 onPressed: () async {
-                  image = await ImagePicker.pickImage(
-                      source: ImageSource.gallery, imageQuality: 50);
+                  image = (await ImagePicker().pickImage(
+                      source: ImageSource.gallery, imageQuality: 50)) as XFile;
+                  Navigator.pop(conta);
                 },
               ),
             ),
@@ -68,5 +70,5 @@ Future<void> pickImage(BuildContext context) async {
     barrierDismissible: true,
     useSafeArea: true,
   );
-  // return image;
+  return image;
 }

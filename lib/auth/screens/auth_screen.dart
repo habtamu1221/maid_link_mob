@@ -6,16 +6,16 @@ import '../../libs.dart';
 // import 'package:flutter/services.dart' show ByteData, rootBundle;
 // import 'package:excel/excel.dart';
 
-class RegistrationScreen extends StatefulWidget {
-  RegistrationScreen();
+class AuthScreen extends StatefulWidget {
+  AuthScreen();
 
-  static final RouteName = "/register";
+  static final String Route = "/register";
 
   @override
-  _RegistrationScreenState createState() => _RegistrationScreenState();
+  _AuthScreenState createState() => _AuthScreenState();
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen> {
+class _AuthScreenState extends State<AuthScreen> {
   static int loadingIndex = 0;
   static final Loadings = ["Loading.", "Loading..", "Loading..."];
 
@@ -48,9 +48,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               // padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
                   gradient: LinearGradient(
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.topCenter,
-                      colors: [Theme.of(context).primaryColor, Colors.white]),
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [Theme.of(context).primaryColor, Colors.black]),
                   // color: Theme.of(context).primaryColor,
                   borderRadius: BorderRadius.only(
                     bottomRight: Radius.elliptical(100, 50),

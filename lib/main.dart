@@ -2,12 +2,26 @@ import 'package:flutter/material.dart';
 import "libs.dart";
 
 void main() {
-  runApp(MainApp());
+  runApp(MultiBlocProvider(providers: [
+    BlocProvider(
+      create: (context) => UserBloc(
+        UserRepo(
+          UserProvider(),
+        ),
+      ),
+    ),
+    BlocProvider(
+      create: (contet) {
+        return ThemeBloc();
+      },
+    ),
+  ], child: MainApp()));
 }
 
 class MainApp extends StatelessWidget {
   void gotoAuthPage(BuildContext context) {
-    Navigator.of(context).pushNamedAndRemoveUntil("/auth", (route) => false);
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil(AuthScreen.Route, (route) => false);
   }
 
   @override
@@ -15,15 +29,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Maid Link',
-      theme: ThemeData(
-        primarySwatch: Colors.orange,
-        textTheme: TextTheme(
-          body1: TextStyle(
-            color: Colors.black,
-          ),
-        ),
-        canvasColor: Colors.white,
-      ),
+      theme: context.read<ThemeBloc>().state,
       initialRoute: "/",
       routes: {
         "/": (BuildContext contaex1) {
@@ -31,12 +37,18 @@ class MainApp extends StatelessWidget {
             onInitializationComplete: gotoAuthPage,
           );
         },
-        "/auth": (BuildContext contaex1) {
-          return RegistrationScreen();
+        AuthScreen.Route: (BuildContext contaex1) {
+          return AuthScreen();
         },
         HomeScreen.ROUTE: (BuildContext context1) {
           return HomeScreen();
-        }
+        },
+        AdminsScreen.Route: (BuildContext context) {
+          return AdminsScreen();
+        },
+        ProfileScreen.Route: (BuildContext context) {
+          return ProfileScreen();
+        },
       },
     );
     //   },

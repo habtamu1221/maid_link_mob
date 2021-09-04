@@ -10,6 +10,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
@@ -34,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Maid Link",
+                      StaticDataStore.roles[StaticDataStore.role.index],
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

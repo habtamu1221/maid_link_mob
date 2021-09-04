@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 import '../../libs.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
+  @override
+  State createState() {
+    return _LoginState();
+  }
+}
+
+class _LoginState extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
-  Login({
-    Key? key,
-  }) : super(key: key);
+  String loginProgressMessage = "";
+  bool showPassword = false;
+  Color loginProgressColor = Colors.green;
+  _LoginState({Key? key});
 
   @override
   Widget build(BuildContext context) {
+    final userBlocProvider = BlocProvider.of<UserBloc>(context);
     return Container(
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -41,9 +49,9 @@ class Login extends StatelessWidget {
                 Radius.circular(10),
               ),
             ),
-            child: Text("Message",
+            child: Text(loginProgressMessage,
                 style: TextStyle(
-                  color: Color(0XFFFFA726),
+                  color: loginProgressColor,
                   fontWeight: FontWeight.bold,
                 )),
           ),
@@ -51,9 +59,6 @@ class Login extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                // margin: EdgeInsets.symmetric(
-                //   horizontal: 30,
-                // ),
                 child: TextField(
                   controller: this.emailController,
                   cursorColor: Theme.of(context).cursorColor,
@@ -63,9 +68,6 @@ class Login extends StatelessWidget {
                     labelStyle: TextStyle(
                       color: Theme.of(context).primaryColorLight,
                     ),
-                    // suffixIcon: Icon(
-                    //   Icons.check_circle,
-                    // ),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                           color: Theme.of(context).primaryColorLight),
@@ -74,13 +76,10 @@ class Login extends StatelessWidget {
                 ),
               ),
               Container(
-                // margin: EdgeInsets.symmetric(
-                //   horizontal: 30,
-                // ),
                 child: TextField(
                   controller: this.passwordController,
                   cursorColor: Theme.of(context).cursorColor,
-                  obscureText: true,
+                  obscureText: !showPassword,
                   decoration: InputDecoration(
                     icon: Icon(
                       Icons.security_rounded,
@@ -90,9 +89,19 @@ class Login extends StatelessWidget {
                       color: Theme.of(context).primaryColorLight,
                     ),
                     // helperText: 'example@example.com',
-                    // suffixIcon: Icon(
-                    //   Icons.check_circle,
-                    // ),
+                    suffixIcon: GestureDetector(
+                      child: Icon(
+                        showPassword
+                            ? Icons.remove_red_eye
+                            : Icons.remove_red_eye_sharp,
+                        color: showPassword ? Colors.red : Colors.blue,
+                      ),
+                      onTap: () {
+                        setState(() {
+                          showPassword = !showPassword;
+                        });
+                      },
+                    ),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: Theme.of(context).primaryColorLight,
@@ -107,9 +116,47 @@ class Login extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             constraints: const BoxConstraints(maxWidth: 500),
             child: RaisedButton(
-              onPressed: () {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    HomeScreen.ROUTE, (route) => false);
+              onPressed: () async {
+                if (emailController.text == "" &&
+                    passwordController.text == "") {
+                  setState() {
+                    loginProgressMessage = "please enter email and password";
+                    loginProgressColor = Colors.red;
+                  }
+
+                  return;
+                } else if (emailController.text == "") {
+                  setState() {
+                    loginProgressMessage = "please enter valid email";
+                    loginProgressColor = Colors.red;
+                  }
+
+                  return;
+                } else if (passwordController.text == "" &&
+                    passwordController.text.length < 4) {
+                  setState() {
+                    loginProgressMessage =
+                        "please enter valid password!\n length should be >= 4";
+                    loginProgressColor = Colors.red;
+                  }
+
+                  return;
+                }
+                // print("LOOOOOGGGGIIIINNNGGG ");
+
+                setState() {
+                  loginProgressMessage = "Loading ... ";
+                  loginProgressColor = Colors.green;
+                }
+
+                final state = await userBlocProvider.loginUser(
+                    emailController.text, passwordController.text);
+                if (state is UserLoggedIn) {
+                  BlocProvider.of<ThemeBloc>(context)
+                      .setTheme(StaticDataStore.role.index);
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      HomeScreen.ROUTE, (route) => false);
+                }
               },
               color: Colors.white,
               shape: const RoundedRectangleBorder(

@@ -1,8 +1,16 @@
 import "../../libs.dart";
 
-class Navigation extends StatelessWidget {
-  const Navigation({Key? key}) : super(key: key);
+class Navigation extends StatefulWidget {
+  Navigation({Key? key}) : super(key: key);
 
+  @override
+  State createState() {
+    return _NavigationState();
+  }
+}
+
+class _NavigationState extends State<Navigation> {
+  File? imageFile;
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -25,46 +33,78 @@ class Navigation extends StatelessWidget {
                       decoration: BoxDecoration(),
                       width: double.infinity,
                       padding: EdgeInsets.all(20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              pickImage(context);
-                            },
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child: Stack(
-                                children: [
-                                  Image.asset(
-                                    "assets/images/maidso.jpeg",
-                                    height: 100,
-                                    width: 100,
-                                    fit: BoxFit.cover,
-                                  ),
-                                  Positioned(
-                                    bottom: 0,
-                                    left: 10,
-                                    width: 100,
-                                    child: Container(
-                                      color: Colors.black54,
-                                      child: Icon(
-                                        Icons.camera,
+                      child: BlocBuilder<UserBloc, UserState>(
+                          builder: (context, state) {
+                        print((state as UserLoggedIn).user!.username);
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                final image = pickImage(context);
+                                if (image != null) {
+                                  image.then((value) {
+                                    setState(() {
+                                      imageFile = File(value!.path);
+                                    });
+                                  });
+                                }
+                              },
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(100),
+                                child: Stack(
+                                  children: [
+                                    imageFile != null
+                                        ? Image.file(
+                                            imageFile!,
+                                            // color: Colors.black,
+                                            height: 100,
+                                            width: 100,
+                                          )
+                                        : ((state as UserLoggedIn)
+                                                    .user!
+                                                    .imageUrl !=
+                                                ""
+                                            ? Image.network(
+                                                StaticDataStore.URL +
+                                                    (state as UserLoggedIn)
+                                                        .user!
+                                                        .imageUrl,
+                                                height: 100,
+                                                width: 100,
+                                                fit: BoxFit.cover,
+                                              )
+                                            : Image.asset(
+                                                "assets/images/avatar.png",
+                                                width: 100,
+                                                height: 100,
+                                              )),
+                                    Positioned(
+                                      bottom: 0,
+                                      left: 10,
+                                      width: 100,
+                                      child: Container(
+                                        color: Colors.black54,
+                                        child: Icon(
+                                          Icons.camera,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                          Container(
-                            child: Text(
-                              "Samuael Adnew",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          )
-                        ],
-                      ),
+                            Container(
+                              child: Text(
+                                state is UserLoggedIn
+                                    ? (state as UserLoggedIn).user!.username
+                                    : " UnNamed ",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          ],
+                        );
+                      }),
                     ),
                   ],
                 ),
@@ -80,23 +120,45 @@ class Navigation extends StatelessWidget {
                       height: 40,
                     ),
                     ListTile(
-                        leading: Icon(Icons.person), title: Text("Profile")),
+                      leading: Icon(Icons.person),
+                      title: Text("Profile"),
+                      onTap: () {
+                        Navigator.of(context).pushNamed(ProfileScreen.Route);
+                      },
+                    ),
                     ListTile(
-                        leading: Icon(Icons.settings), title: Text("Settings")),
+                      leading: Icon(Icons.settings),
+                      title: Text("Settings"),
+                    ),
                     ListTile(
-                        leading: Icon(Icons.verified_user),
-                        title: Text("My Maids")),
+                      leading: Icon(Icons.verified_user),
+                      title: Text("My Maids"),
+                    ),
                     ListTile(
-                        leading: Icon(Icons.supervised_user_circle_sharp),
-                        title: Text("Admins")),
+                      leading: Icon(Icons.supervised_user_circle_sharp),
+                      title: Text("Admins"),
+                      onTap: () {
+                        Navigator.of(context).pushNamed(AdminsScreen.Route);
+                      },
+                    ),
                     ListTile(
                         leading: Icon(Icons.supervised_user_circle_outlined),
                         title: Text("Clients")),
                     ListTile(
-                        leading: Icon(Icons.privacy_tip_outlined),
-                        title: Text("Security")),
+                      leading: Icon(Icons.privacy_tip_outlined),
+                      title: Text("Security"),
+                    ),
                     ListTile(
-                        leading: Icon(Icons.logout), title: Text("Logout")),
+                        leading: Icon(Icons.logout),
+                        title: Text("Logout"),
+                        onTap: () {
+                          StaticDataStore.TOKEN = "";
+                          StaticDataStore.role = Role.admin;
+                          context.watch<ThemeBloc>().setTheme(1);
+                          context.watch<UserBloc>().setState(UserInit());
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                              AuthScreen.Route, (route) => false);
+                        }),
                     Container(
                       height: 40,
                       width: double.infinity,
