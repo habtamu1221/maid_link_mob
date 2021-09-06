@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import '../../libs.dart';
 
 class Login extends StatefulWidget {
+  final Function gotoRegistration;
+
+  Login({required this.gotoRegistration});
+
   @override
-  State createState() {
+  State<Login> createState() {
     return _LoginState();
   }
 }
@@ -13,8 +17,57 @@ class _LoginState extends State<Login> {
   TextEditingController passwordController = TextEditingController();
   String loginProgressMessage = "";
   bool showPassword = false;
+  bool inProgress = false;
   Color loginProgressColor = Colors.green;
   _LoginState({Key? key});
+
+  loginPressed(UserBloc userBlocProvider) async {
+    loginProgressColor = Colors.green;
+    if (emailController.text == "" && passwordController.text == "") {
+      print("Section called ...");
+      setState(() {
+        this.loginProgressMessage = "please enter email and password";
+        this.loginProgressColor = Colors.red;
+      });
+
+      return;
+    } else if (emailController.text == "") {
+      setState(() {
+        this.loginProgressMessage = "please enter valid email";
+        this.loginProgressColor = Colors.red;
+      });
+
+      return;
+    } else if (passwordController.text == "" &&
+        passwordController.text.length < 4) {
+      setState(() {
+        this.loginProgressMessage =
+            "please enter valid password!\n length should be >= 4";
+        this.loginProgressColor = Colors.red;
+      });
+
+      return;
+    } else {
+      setState(() {
+        this.loginProgressMessage = " Loading ... ";
+        this.loginProgressColor = Colors.green;
+        inProgress = true;
+      });
+    }
+    final state = await userBlocProvider.loginUser(
+        emailController.text, passwordController.text);
+    if (state is UserLoggedIn) {
+      BlocProvider.of<ThemeBloc>(context).setTheme(StaticDataStore.role.index);
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(HomeScreen.ROUTE, (route) => false);
+    } else {
+      setState(() {
+        this.loginProgressColor = Colors.red;
+        this.loginProgressMessage = "Invalid Username or password";
+        this.inProgress = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +80,18 @@ class _LoginState extends State<Login> {
           topLeft: Radius.elliptical(100, 50),
         ),
       ),
-      child: Column(
+      child: ListView(
         children: <Widget>[
           Container(
             margin: EdgeInsets.only(
               top: 10,
             ),
             child: Center(
-              child: const CircularProgressIndicator(color: Colors.white),
+              child: inProgress
+                  ? CircularProgressIndicator(
+                      color: Theme.of(context).primaryColor,
+                    )
+                  : SizedBox(),
             ),
           ),
           Container(
@@ -49,11 +106,13 @@ class _LoginState extends State<Login> {
                 Radius.circular(10),
               ),
             ),
-            child: Text(loginProgressMessage,
-                style: TextStyle(
-                  color: loginProgressColor,
-                  fontWeight: FontWeight.bold,
-                )),
+            child: Text(
+              loginProgressMessage,
+              style: TextStyle(
+                color: loginProgressColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,48 +175,7 @@ class _LoginState extends State<Login> {
             margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             constraints: const BoxConstraints(maxWidth: 500),
             child: RaisedButton(
-              onPressed: () async {
-                if (emailController.text == "" &&
-                    passwordController.text == "") {
-                  setState() {
-                    loginProgressMessage = "please enter email and password";
-                    loginProgressColor = Colors.red;
-                  }
-
-                  return;
-                } else if (emailController.text == "") {
-                  setState() {
-                    loginProgressMessage = "please enter valid email";
-                    loginProgressColor = Colors.red;
-                  }
-
-                  return;
-                } else if (passwordController.text == "" &&
-                    passwordController.text.length < 4) {
-                  setState() {
-                    loginProgressMessage =
-                        "please enter valid password!\n length should be >= 4";
-                    loginProgressColor = Colors.red;
-                  }
-
-                  return;
-                }
-                // print("LOOOOOGGGGIIIINNNGGG ");
-
-                setState() {
-                  loginProgressMessage = "Loading ... ";
-                  loginProgressColor = Colors.green;
-                }
-
-                final state = await userBlocProvider.loginUser(
-                    emailController.text, passwordController.text);
-                if (state is UserLoggedIn) {
-                  BlocProvider.of<ThemeBloc>(context)
-                      .setTheme(StaticDataStore.role.index);
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      HomeScreen.ROUTE, (route) => false);
-                }
-              },
+              onPressed: () => loginPressed(userBlocProvider),
               color: Colors.white,
               shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(14))),
@@ -196,7 +214,9 @@ class _LoginState extends State<Login> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              onPressed: () {}),
+              onPressed: () {
+                widget.gotoRegistration();
+              }),
         ],
       ),
     );

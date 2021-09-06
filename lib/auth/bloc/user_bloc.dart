@@ -22,4 +22,14 @@ class UserBloc extends Cubit<UserState> {
     }
     return this.state;
   }
+
+  Future<Object?> registerClient(
+      String username, String email, String password) async {
+    final client = await this.repo.registerClient(username, email, password);
+    return client;
+  }
+
+  Future<bool> changePassword(String oldPassword, String newPassword) async {
+    return await this.repo.changePassword(oldPassword, newPassword);
+  }
 }

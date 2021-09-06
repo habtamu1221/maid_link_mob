@@ -38,10 +38,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               width: 200,
             ),
             MyProfile(),
-            MaidProfile(
-              maid: maid,
-            ),
-            WorksItems(works: works),
+            // MaidProfile(
+            //   maid: maid,
+            // ),
+            // WorksItems(works: works),
           ],
         ),
       ),

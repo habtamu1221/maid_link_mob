@@ -74,3 +74,18 @@ class DUser {
     );
   }
 }
+
+class ShortError {
+  String err;
+  ShortError({required this.err});
+
+  factory ShortError.fromJson(Map<String, dynamic> json) {
+    return ShortError(err: json['err']);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "err": err,
+    };
+  }
+}

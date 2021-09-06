@@ -29,7 +29,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Maid Link',
-      theme: context.read<ThemeBloc>().state,
+      theme: context.watch<ThemeBloc>().state,
       initialRoute: "/",
       routes: {
         "/": (BuildContext contaex1) {
@@ -49,6 +49,9 @@ class MainApp extends StatelessWidget {
         ProfileScreen.Route: (BuildContext context) {
           return ProfileScreen();
         },
+        SettingScreen.Route: (BuildContext context) {
+          return SettingScreen();
+        }
       },
     );
     //   },

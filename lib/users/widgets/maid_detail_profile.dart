@@ -1,4 +1,4 @@
-import 'package:maidlink/users/widgets/work_item.dart';
+// import 'package:maidlink/users/widgets/work_item.dart';
 
 import '../../libs.dart';
 
@@ -8,32 +8,30 @@ class MaidProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          ListTile(
-            leading: Text("Phone"),
-            title: Text("${maid.phone}"),
+    return ListView(
+      children: [
+        ListTile(
+          leading: Text("Phone"),
+          title: Text("${maid.phone}"),
+        ),
+        ListTile(
+          leading: Text("Address"),
+          title: Text("${maid.address}"),
+        ),
+        ListTile(
+          leading: Text("Bio"),
+          title: Text("${maid.bio}"),
+        ),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Text("Careers"),
+          ListView.builder(
+            itemCount: maid.carrers.length,
+            itemBuilder: (context, index) {
+              return Text("${maid.carrers[index]}");
+            },
           ),
-          ListTile(
-            leading: Text("Address"),
-            title: Text("${maid.address}"),
-          ),
-          ListTile(
-            leading: Text("Bio"),
-            title: Text("${maid.bio}"),
-          ),
-          ListTile(
-            leading: Text("Careers"),
-            title: ListView.builder(
-              itemCount: 4,
-              itemBuilder: (context, index) {
-                return Text("${maid.carrers[index]}");
-              },
-            ),
-          ),
-        ],
-      ),
+        ]),
+      ],
     );
   }
 }

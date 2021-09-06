@@ -22,6 +22,18 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   void initState() {}
 
+  PageController controller = PageController();
+
+  change() {
+    if (index == 2) {
+      controller.nextPage(
+          duration: Duration(seconds: 2), curve: Curves.easeInCirc);
+    } else if (index == 1) {
+      controller.previousPage(
+          duration: Duration(seconds: 2), curve: Curves.bounceInOut);
+    }
+  }
+
   void tickerFunction(Duration duration) {}
   // Declaring the Controllers
   String message = "";
@@ -89,6 +101,7 @@ class _AuthScreenState extends State<AuthScreen> {
               // color: Colors.black,
               width: double.infinity,
               child: PageView(
+                  controller: controller,
                   onPageChanged: (int index) {
                     if (index == 0) {
                       setState(() {
@@ -104,7 +117,10 @@ class _AuthScreenState extends State<AuthScreen> {
                       });
                     }
                   },
-                  children: [Login(), RegisterClient()]),
+                  children: [
+                    Login(gotoRegistration: change),
+                    RegisterClient(gotoLogin: change)
+                  ]),
             ),
           ),
         ]),

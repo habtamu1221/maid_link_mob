@@ -1,12 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:maidlink/home/screens/screens.dart';
+import '../../libs.dart';
 
-class RegisterClient extends StatelessWidget {
-  RegisterClient({Key? key}) : super(key: key);
+class RegisterClient extends StatefulWidget {
+  final Function gotoLogin;
+  RegisterClient({Key? key, required this.gotoLogin}) : super(key: key);
+
+  @override
+  State<RegisterClient> createState() {
+    return _RegisterClientState();
+  }
+}
+
+class _RegisterClientState extends State<RegisterClient> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPaswordController = TextEditingController();
+  String statusMessage = "";
+  Color statusColor = Colors.green;
+  bool inProgress = false;
+
+  bool isEmail(String email) {
+    final spemail = email.split("@");
+    if (spemail.length > 1) {
+      return true;
+    }
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +38,7 @@ class RegisterClient extends StatelessWidget {
           topLeft: Radius.elliptical(100, 50),
         ),
       ),
-      child: Column(
+      child: ListView(
         children: <Widget>[
           Container(
             margin: EdgeInsets.only(
@@ -28,6 +48,15 @@ class RegisterClient extends StatelessWidget {
               child: const CircularProgressIndicator(color: Colors.white),
             ),
           ),
+          inProgress
+              ? Center(
+                  child: SizedBox(
+                    height: 40,
+                    width: 40,
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              : SizedBox(),
           Container(
             margin: EdgeInsets.symmetric(
               horizontal: 5,
@@ -40,19 +69,18 @@ class RegisterClient extends StatelessWidget {
                 Radius.circular(10),
               ),
             ),
-            child: Text("Message",
-                style: TextStyle(
-                  color: Color(0XFFFFA726),
-                  fontWeight: FontWeight.bold,
-                )),
+            child: Text(
+              statusMessage,
+              style: TextStyle(
+                color: statusColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                // margin: EdgeInsets.symmetric(
-                //   horizontal: 30,
-                // ),
                 child: TextField(
                   controller: usernameController,
                   cursorColor: Theme.of(context).cursorColor,
@@ -62,9 +90,6 @@ class RegisterClient extends StatelessWidget {
                     labelStyle: TextStyle(
                       color: Theme.of(context).primaryColorLight,
                     ),
-                    // suffixIcon: Icon(
-                    //   Icons.check_circle,
-                    // ),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                           color: Theme.of(context).primaryColorLight),
@@ -85,9 +110,6 @@ class RegisterClient extends StatelessWidget {
                     labelStyle: TextStyle(
                       color: Theme.of(context).primaryColorLight,
                     ),
-                    // suffixIcon: Icon(
-                    //   Icons.check_circle,
-                    // ),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                           color: Theme.of(context).primaryColorLight),
@@ -111,10 +133,6 @@ class RegisterClient extends StatelessWidget {
                     labelStyle: TextStyle(
                       color: Theme.of(context).primaryColorLight,
                     ),
-                    // helperText: 'example@example.com',
-                    // suffixIcon: Icon(
-                    //   Icons.check_circle,
-                    // ),
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: Theme.of(context).primaryColorLight,
@@ -124,9 +142,6 @@ class RegisterClient extends StatelessWidget {
                 ),
               ),
               Container(
-                // margin: EdgeInsets.symmetric(
-                //   horizontal: 30,
-                // ),
                 child: TextField(
                   controller: confirmPaswordController,
                   cursorColor: Theme.of(context).cursorColor,
@@ -157,7 +172,88 @@ class RegisterClient extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             constraints: const BoxConstraints(maxWidth: 500),
             child: RaisedButton(
-              onPressed: () => () async {}(),
+              onPressed: () async {
+                print("Register Called ");
+                setState(() {
+                  statusMessage = "";
+                  statusColor = Colors.green;
+                });
+                // check whether the datas all are filled with
+                if (usernameController.text == "" ||
+                    emailController.text == "" ||
+                    passwordController.text == "" ||
+                    confirmPaswordController.text == "") {
+                  setState(() {
+                    statusMessage = "fill the entries";
+                    statusColor = Colors.red;
+                  });
+                } else if (passwordController.text !=
+                    confirmPaswordController.text) {
+                  setState(() {
+                    statusMessage = "re-type the password";
+                    passwordController.text = "";
+                    confirmPaswordController.text = "";
+                    statusColor = Colors.red;
+                  });
+                } else if (!isEmail(emailController.text)) {
+                  setState(() {
+                    statusMessage = "Invalid Email Address ";
+                    emailController.text = "";
+                    statusColor = Colors.red;
+                    inProgress = false;
+                  });
+                }
+                setState(() {
+                  statusMessage = " loading ... ";
+                  statusColor = Colors.green;
+                  inProgress = true;
+                });
+
+                await Future.delayed(Duration(seconds: 2));
+                // submit teh form to the server ---
+                final result =
+                    await BlocProvider.of<UserBloc>(context).registerClient(
+                  usernameController.text,
+                  emailController.text,
+                  passwordController.text,
+                );
+                if (result == null) {
+                  setState(() {
+                    statusMessage = "  INTERNAL SERVER ERROR ";
+                    statusColor = Colors.red;
+                    inProgress = false;
+                  });
+                  return;
+                }
+                if (result is DUser) {
+                  final state = await BlocProvider.of<UserBloc>(context)
+                      .loginUser(emailController.text, passwordController.text);
+                  if (state is UserLoggedIn) {
+                    BlocProvider.of<ThemeBloc>(context)
+                        .setTheme(StaticDataStore.role.index);
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        HomeScreen.ROUTE, (route) => false);
+                  }
+                  return;
+                } else if (result is ShortError) {
+                  setState(() {
+                    statusMessage = " ${(result as ShortError).err} ";
+                    emailController.text = "";
+                    statusColor = Colors.red;
+                    inProgress = false;
+                  });
+                  return;
+                  // ----------------------------
+                } else {
+                  setState(() {
+                    statusMessage = " INTERNAL SERVER ERROR ";
+                    statusColor = Colors.red;
+                    inProgress = false;
+                  });
+                  return;
+                }
+                // -----------------------------------------------
+              },
               color: Colors.white,
               shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(14))),
@@ -197,8 +293,7 @@ class RegisterClient extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                Navigator.of(context).pushNamedAndRemoveUntil(
-                    HomeScreen.ROUTE, (route) => false);
+                widget.gotoLogin();
               }),
         ],
       ),

@@ -35,7 +35,7 @@ class _NavigationState extends State<Navigation> {
                       padding: EdgeInsets.all(20),
                       child: BlocBuilder<UserBloc, UserState>(
                           builder: (context, state) {
-                        print((state as UserLoggedIn).user!.username);
+                        // print((state as UserLoggedIn).user!.username);
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -94,14 +94,32 @@ class _NavigationState extends State<Navigation> {
                                 ),
                               ),
                             ),
-                            Container(
-                              child: Text(
-                                state is UserLoggedIn
-                                    ? (state as UserLoggedIn).user!.username
-                                    : " UnNamed ",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            )
+                            Column(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(10),
+                                  child: Text(
+                                    state is UserLoggedIn
+                                        ? (state as UserLoggedIn).user!.username
+                                        : " UnNamed ",
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.all(10),
+                                  child: Text(
+                                    state is UserLoggedIn
+                                        ? (state as UserLoggedIn).user!.id
+                                        : "-----------",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 8,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         );
                       }),
@@ -129,6 +147,9 @@ class _NavigationState extends State<Navigation> {
                     ListTile(
                       leading: Icon(Icons.settings),
                       title: Text("Settings"),
+                      onTap: () {
+                        Navigator.of(context).pushNamed(SettingScreen.Route);
+                      },
                     ),
                     ListTile(
                       leading: Icon(Icons.verified_user),
@@ -145,9 +166,13 @@ class _NavigationState extends State<Navigation> {
                         leading: Icon(Icons.supervised_user_circle_outlined),
                         title: Text("Clients")),
                     ListTile(
-                      leading: Icon(Icons.privacy_tip_outlined),
-                      title: Text("Security"),
-                    ),
+                        leading: Icon(Icons.privacy_tip_outlined),
+                        title: Text("Security"),
+                        onTap: () {
+                          Navigator.of(context).pushNamed(
+                            SettingScreen.Route,
+                          );
+                        }),
                     ListTile(
                         leading: Icon(Icons.logout),
                         title: Text("Logout"),
@@ -156,8 +181,9 @@ class _NavigationState extends State<Navigation> {
                           StaticDataStore.role = Role.admin;
                           context.watch<ThemeBloc>().setTheme(1);
                           context.watch<UserBloc>().setState(UserInit());
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                              AuthScreen.Route, (route) => false);
+                          Navigator.of(context).pushNamed(
+                            AuthScreen.Route,
+                          );
                         }),
                     Container(
                       height: 40,

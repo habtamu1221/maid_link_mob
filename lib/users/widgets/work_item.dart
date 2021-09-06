@@ -8,6 +8,7 @@ class WorksItems extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: ListView.builder(
+        itemCount: works.length,
         itemBuilder: (context, index) {
           return Container(
             child: Column(

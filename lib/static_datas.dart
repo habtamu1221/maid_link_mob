@@ -12,4 +12,6 @@ class StaticDataStore {
   static String URL = SCHEME + HOST + ":$PORT/";
   static String TOKEN = "";
   static Role role = Role.admin;
+  static String id = "";
+  static String Password = '';
 }

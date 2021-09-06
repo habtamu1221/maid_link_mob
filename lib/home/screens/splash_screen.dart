@@ -110,10 +110,12 @@ class _SplashAppState extends State<SplashApp> {
                         ),
                       ),
                       Positioned(
-                        bottom: 20,
-                        left: MediaQuery.of(context).size.width * 0.3,
-                        right: MediaQuery.of(context).size.width * 0.3,
-                        child: Container(
+                        bottom: 40,
+                        left: MediaQuery.of(context).size.width * 0.4,
+                        // right: MediaQuery.of(context).size.width * 0.3,
+                        child: SizedBox(
+                          width: 30,
+                          height: 30,
                           child: CircularProgressIndicator(),
                         ),
                       )

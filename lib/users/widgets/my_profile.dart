@@ -116,7 +116,6 @@ class _MyProfileState extends State<MyProfile> {
                     //   padding: EdgeInsets.all(10),
                     //   child: Text("${(state as UserLoggedIn).user }"),
                     // ),
-
                     Container(
                       decoration: BoxDecoration(
                         border: Border.all(

@@ -59,7 +59,7 @@ Maid maid = Maid(
   ],
   phone: "+251992078204",
   rateCount: 3,
-  rates: 4,
+  rates: 4.78,
   user: DUser(
     id: "6125f135e831b1715dcb7056",
     email: "samuaeladnew@gmail.com",
