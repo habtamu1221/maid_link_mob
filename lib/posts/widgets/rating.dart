@@ -1,7 +1,7 @@
 import '../../libs.dart';
 
 class Rating extends StatelessWidget {
-  final int rating;
+  final double rating;
   const Rating({Key? key, required this.rating}) : super(key: key);
 
   @override

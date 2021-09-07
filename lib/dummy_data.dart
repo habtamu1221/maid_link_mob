@@ -57,6 +57,13 @@ Maid maid = Maid(
     "Three",
     "Four ",
   ],
+  works: [],
+  profileImages: [
+    "images/posts/RrSeQ.png",
+    "images/posts/7_Tb1.png",
+    "images/posts/LLSjw.png",
+    "images/posts/oNjVE.png",
+  ],
   phone: "+251992078204",
   rateCount: 3,
   rates: 4.78,

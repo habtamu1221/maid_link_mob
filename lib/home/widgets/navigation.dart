@@ -12,7 +12,7 @@ class Navigation extends StatefulWidget {
 class _NavigationState extends State<Navigation> {
   File? imageFile;
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext contexts) {
     return Drawer(
       child: Container(
         decoration: BoxDecoration(
@@ -40,15 +40,30 @@ class _NavigationState extends State<Navigation> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             GestureDetector(
-                              onTap: () {
+                              onTap: () async {
                                 final image = pickImage(context);
-                                if (image != null) {
-                                  image.then((value) {
-                                    setState(() {
-                                      imageFile = File(value!.path);
-                                    });
-                                  });
-                                }
+                                // if (image != null) {
+                                image.then((value) async {
+                                  final file = File(value!.path);
+                                  final simpleMessage =
+                                      await BlocProvider.of<UserBloc>(context)
+                                          .changeProfilePicture(file!);
+
+                                  if (simpleMessage.success) {
+                                    // setState(() {
+                                    //   imageFile = file;
+                                    // });
+                                    print(simpleMessage.success);
+                                    print("changed");
+                                    print(StaticDataStore.URL +
+                                        (state as UserLoggedIn).user!.imageUrl);
+                                  } else {
+                                    print(StaticDataStore.URL +
+                                        (state as UserLoggedIn).user!.imageUrl);
+                                    // do notiong
+                                  }
+                                });
+                                // }
                               },
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(100),
@@ -151,20 +166,29 @@ class _NavigationState extends State<Navigation> {
                         Navigator.of(context).pushNamed(SettingScreen.Route);
                       },
                     ),
-                    ListTile(
-                      leading: Icon(Icons.verified_user),
-                      title: Text("My Maids"),
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.supervised_user_circle_sharp),
-                      title: Text("Admins"),
-                      onTap: () {
-                        Navigator.of(context).pushNamed(AdminsScreen.Route);
-                      },
-                    ),
-                    ListTile(
-                        leading: Icon(Icons.supervised_user_circle_outlined),
-                        title: Text("Clients")),
+                    StaticDataStore.role == Role.admin ||
+                            StaticDataStore.role == Role.client
+                        ? ListTile(
+                            leading: Icon(Icons.verified_user),
+                            title: Text("My Maids"),
+                          )
+                        : SizedBox(),
+                    StaticDataStore.role == Role.admin
+                        ? ListTile(
+                            leading: Icon(Icons.supervised_user_circle_sharp),
+                            title: Text("Admins"),
+                            onTap: () {
+                              Navigator.of(context)
+                                  .pushNamed(AdminsScreen.Route);
+                            },
+                          )
+                        : SizedBox(),
+                    StaticDataStore.role == Role.admin
+                        ? ListTile(
+                            leading:
+                                Icon(Icons.supervised_user_circle_outlined),
+                            title: Text("Clients"))
+                        : SizedBox(),
                     ListTile(
                         leading: Icon(Icons.privacy_tip_outlined),
                         title: Text("Security"),
@@ -177,13 +201,14 @@ class _NavigationState extends State<Navigation> {
                         leading: Icon(Icons.logout),
                         title: Text("Logout"),
                         onTap: () {
+                          Navigator.of(contexts)
+                              .pushNamedAndRemoveUntil(AuthScreen.Route, (_) {
+                            return false;
+                          });
                           StaticDataStore.TOKEN = "";
                           StaticDataStore.role = Role.admin;
                           context.watch<ThemeBloc>().setTheme(1);
                           context.watch<UserBloc>().setState(UserInit());
-                          Navigator.of(context).pushNamed(
-                            AuthScreen.Route,
-                          );
                         }),
                     Container(
                       height: 40,

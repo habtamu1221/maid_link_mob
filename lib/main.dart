@@ -10,9 +10,15 @@ void main() {
         ),
       ),
     ),
+    //
     BlocProvider(
       create: (contet) {
         return ThemeBloc();
+      },
+    ),
+    BlocProvider(
+      create: (contet) {
+        return PostBloc(repo: MaidPostRepo(provider: MaidPostProvider()));
       },
     ),
   ], child: MainApp()));

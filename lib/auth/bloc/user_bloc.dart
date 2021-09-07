@@ -32,4 +32,17 @@ class UserBloc extends Cubit<UserState> {
   Future<bool> changePassword(String oldPassword, String newPassword) async {
     return await this.repo.changePassword(oldPassword, newPassword);
   }
+
+  Future<bool> deactivate() async {
+    return await this.repo.deactivate();
+  }
+
+  Future<SimpleMessage> changeProfilePicture(File image) async {
+    final mess = await this.repo.changeProfilePicture(image);
+    if (mess.success && this.state is UserLoggedIn) {
+      (this.state as UserLoggedIn).user.imageUrl = mess.msg;
+      emit(this.state);
+    }
+    return mess;
+  }
 }

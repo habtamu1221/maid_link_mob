@@ -17,6 +17,10 @@ class _SettingScreenState extends State<SettingScreen> {
   bool showPassword = false;
   String statusMessage = "";
   Color statusColor = Colors.green;
+
+  String deactivateMessage = "";
+  Color deactivateMessageColor = Colors.green;
+
   bool deactivateAccount = false;
   @override
   Widget build(BuildContext context) {
@@ -47,53 +51,100 @@ class _SettingScreenState extends State<SettingScreen> {
               ),
               onTap: () {
                 setState(() {
-                  deactivateAccount = !deactivateAccount;
+                  deactivateAccount = !(deactivateAccount);
                 });
                 // activateAccount(context);
               },
             ),
-            !deactivateAccount
-                ? Container(
-                    child: Row(
+            (deactivateAccount)
+                ? AnimatedContainer(
+                    duration: Duration(seconds: 3),
+                    width: double.infinity,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        TextField(
-                          controller: this.deactivateController,
-                          cursorColor: Theme.of(context).cursorColor,
-                          obscureText: !showPassword,
-                          decoration: InputDecoration(
-                            icon: Icon(
-                              Icons.security_rounded,
-                            ),
-                            labelText: 'Password',
-                            labelStyle: TextStyle(
-                              color: Theme.of(context).primaryColorLight,
-                            ),
-                            // helperText: 'example@example.com',
-                            suffixIcon: GestureDetector(
-                              child: Icon(
-                                showPassword
-                                    ? Icons.remove_red_eye
-                                    : Icons.remove_red_eye_sharp,
-                                color: showPassword ? Colors.red : Colors.blue,
+                        Text(
+                          deactivateMessage,
+                          style: TextStyle(
+                            color: deactivateMessageColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 5,
+                          ),
+                          child: TextField(
+                            controller: this.deactivateController,
+                            cursorColor: Theme.of(context).cursorColor,
+                            obscureText: !showPassword,
+                            decoration: InputDecoration(
+                              icon: Icon(
+                                Icons.security_rounded,
                               ),
-                              onTap: () {
-                                setState(() {
-                                  showPassword = !showPassword;
-                                });
-                              },
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
+                              labelText: 'Password',
+                              labelStyle: TextStyle(
                                 color: Theme.of(context).primaryColorLight,
+                              ),
+                              // helperText: 'example@example.com',
+                              suffixIcon: GestureDetector(
+                                child: Icon(
+                                  showPassword
+                                      ? Icons.remove_red_eye
+                                      : Icons.remove_red_eye_sharp,
+                                  color:
+                                      showPassword ? Colors.red : Colors.blue,
+                                ),
+                                onTap: () {
+                                  setState(() {
+                                    showPassword = !showPassword;
+                                  });
+                                },
+                              ),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Theme.of(context).primaryColor,
+                                ),
                               ),
                             ),
                           ),
                         ),
                         FlatButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            setState(() {
+                              this.deactivateMessage = "...";
+                              this.deactivateMessageColor = Colors.green;
+                            });
+
+                            await Future.delayed(Duration(seconds: 1));
+                            if (deactivateController.text == "") {
+                              setState(() {
+                                this.deactivateMessage =
+                                    "please enter password";
+                                this.deactivateMessageColor = Colors.red;
+                              });
+                              return;
+                            }
+                            if (StaticDataStore.Password ==
+                                deactivateController.text) {
+                              // setState(() {
+                              //   this.deactivateMessage = "...";
+                              //   this.deactivateMessageColor = Colors.green;
+                              // });
+                              activateAccount(context);
+                              return;
+                            }
+                            setState(() {
+                              this.deactivateMessage = "wrong password";
+                              this.deactivateMessageColor = Colors.red;
+                            });
+                            return;
+                          },
                           child: Text(
-                            "Submit",
+                            "Deactivate",
                             style: TextStyle(
+                              color: Theme.of(context).primaryColor,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

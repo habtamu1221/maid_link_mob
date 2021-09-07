@@ -16,12 +16,17 @@ class Work {
   });
 
   factory Work.fromJson(Map<String, dynamic> json) {
+    print("\n\n\n\n$json\n\n${json['NO']}\n\n");
+
     return Work(
-        no: int.parse(json["no"]),
-        shift: int.parse(json['shift']),
-        type: int.parse(json['type']),
-        experiance: json['experiance'],
-        experties: json['experties']);
+      no: int.parse("${json["NO"]}"),
+      shift: int.parse("${json['Shift']}"),
+      type: int.parse("${json['Type']}"),
+      experiance: json['Experiance'],
+      experties: (json['Experties'] as List<dynamic>).map((e) {
+        return "$e";
+      }).toList(),
+    );
   }
 
   void setID(String id) {

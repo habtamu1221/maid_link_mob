@@ -6,8 +6,10 @@ class Maid extends User {
   late String address;
   late String bio;
   late List<String> carrers;
+  late List<String> profileImages;
   late double rates;
   late int rateCount;
+  late List<Work> works;
   DUser? user;
   Maid({
     required this.phone,
@@ -17,18 +19,44 @@ class Maid extends User {
     required this.rates,
     required this.rateCount,
     required this.user,
+    required this.profileImages,
+    required this.works,
   });
 
   factory Maid.fromJson(Map<String, dynamic> json) {
     // try {
+    if (json["works"] == null) {
+      json["works"] = [];
+    }
+    final works = (json["works"] as List<dynamic>).map<Map<String, dynamic>>(
+      (el) {
+        return el as Map<String, dynamic>;
+      },
+    ).toList();
+    works
+      ..removeWhere((erls) {
+        return erls == null;
+      });
+    final nworks = works.map<Work>((el) {
+      return Work.fromJson(el);
+    }).toList();
+    print(json['rates']);
     return Maid(
       phone: json["phone"],
       address: json["address"],
       bio: json["bio"],
-      carrers: json["carrers"],
-      rates: double.parse(json["rates"]),
-      rateCount: int.parse(json["rate_count"]),
-      user: null,
+      carrers: json["carrers"] ?? [],
+      rates: 0,
+      // json["rates"] != null ? double.parse(json["rates"]) ?? 0 : 0,
+      rateCount: 0,
+      // json["rate_count"] != null ? int.parse(json["rate_count"]) ?? 0 : 0,
+      user: DUser.fromJson(json["user"] as Map<String, dynamic>),
+      profileImages: (json["profile_images"] as List<dynamic>).map(
+        (el) {
+          return (el as String);
+        },
+      ).toList(),
+      works: nworks,
     );
   }
 

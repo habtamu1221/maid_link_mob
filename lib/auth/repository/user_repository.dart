@@ -39,4 +39,12 @@ class UserRepo {
   Future<bool> changePassword(String oldPassword, String newPassword) async {
     return provider.changePassword(oldPassword, newPassword);
   }
+
+  Future<bool> deactivate() async {
+    return provider.deactivate();
+  }
+
+  Future<SimpleMessage> changeProfilePicture(File image) {
+    return this.provider.changeProfilePicture(image);
+  }
 }

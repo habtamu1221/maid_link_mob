@@ -29,7 +29,23 @@ Future<void> activateAccount(BuildContext context) async {
             ),
           ),
           FlatButton(
-            onPressed: () => Navigator.pop(conta),
+            onPressed: () async {
+              final success =
+                  await BlocProvider.of<UserBloc>(context).deactivate();
+              if (success) {
+                Navigator.pop(conta);
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    AuthScreen.Route, (route) => false);
+                StaticDataStore.TOKEN = "";
+                StaticDataStore.role = Role.admin;
+                context.watch<ThemeBloc>().setTheme(1);
+                context.watch<UserBloc>().setState(UserInit());
+                return;
+              } else {
+                print("WAS Not SUccesful...");
+                Navigator.pop(conta);
+              }
+            },
             child: Text(
               "Yes",
               textAlign: TextAlign.justify,
