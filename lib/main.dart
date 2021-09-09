@@ -21,6 +21,14 @@ void main() {
         return PostBloc(repo: MaidPostRepo(provider: MaidPostProvider()));
       },
     ),
+    BlocProvider(
+      create: (contet) {
+        return MaidBloc(repo: MaidRepo(provider: MaidProvider()));
+      },
+    ),
+    BlocProvider(create: (contxt) {
+      return MyMaidsBloc(MyMaidsRepo(MyMaidsProvider()));
+    })
   ], child: MainApp()));
 }
 
@@ -57,6 +65,15 @@ class MainApp extends StatelessWidget {
         },
         SettingScreen.Route: (BuildContext context) {
           return SettingScreen();
+        },
+        MaidProfileScreen.Route: (BuildContext context) {
+          return MaidProfileScreen();
+        },
+        MyMaids.Route: (BuildContext context) {
+          return MyMaids(repo: MyMaidsRepo(MyMaidsProvider()));
+        },
+        EditProfileScreen.Route: (BuildContext context) {
+          return EditProfileScreen();
         }
       },
     );

@@ -9,6 +9,8 @@ class PostItem extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         // post item is clicked and i am gonna do some thing .
+        Navigator.of(context)
+            .pushNamed(MaidProfileScreen.Route, arguments: {"maid": this.maid});
       },
       child: Container(
         width: double.infinity,
@@ -120,7 +122,9 @@ class PostItem extends StatelessWidget {
                   )
                 : SizedBox(),
             Text("${maid.bio ?? ""}"),
-            Rating(rating: maid.rates),
+            RatingShowOnly(
+              rating: maid.rates,
+            ),
             SizedBox(height: 10),
           ],
         ),

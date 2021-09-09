@@ -8,30 +8,67 @@ class MaidProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        ListTile(
-          leading: Text("Phone"),
-          title: Text("${maid.phone}"),
-        ),
-        ListTile(
-          leading: Text("Address"),
-          title: Text("${maid.address}"),
-        ),
-        ListTile(
-          leading: Text("Bio"),
-          title: Text("${maid.bio}"),
-        ),
-        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text("Careers"),
-          ListView.builder(
-            itemCount: maid.carrers.length,
-            itemBuilder: (context, index) {
-              return Text("${maid.carrers[index]}");
-            },
+    return SizedBox(
+      width: double.infinity,
+      // height: 300,
+
+      // padding: EdgeInsets.all(10),
+      // margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+      // width: double.infinity,
+      // height: 800,
+      child: Column(
+        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          ListTile(
+            leading: Text(
+              "Phone",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            title: Text("${maid.phone}"),
           ),
-        ]),
-      ],
+          ListTile(
+            leading: Text(
+              "Address",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            title: Text("${maid.address}"),
+          ),
+          ListTile(
+            leading: Text(
+              "Bio",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            title: Text("${maid.bio != '' ? maid.bio : ' ---- '}"),
+          ),
+          // SizedBox(),
+          ListTile(
+            leading: Text(
+              "Careers",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            title: Column(
+                // itemCount: maid.carrers.length,
+                // itemBuilder: (context, index) {
+                children: [
+                  ...maid.carrers
+                      .map(
+                        (e) => Text("${e}"),
+                      )
+                      .toList(),
+                ]
+                // },
+                ),
+          )
+        ],
+      ),
     );
   }
 }

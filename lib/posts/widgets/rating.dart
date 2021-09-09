@@ -2,7 +2,23 @@ import '../../libs.dart';
 
 class Rating extends StatelessWidget {
   final double rating;
-  const Rating({Key? key, required this.rating}) : super(key: key);
+  final String maidID;
+  final List<String> ratedBy;
+  const Rating({
+    Key? key,
+    required this.rating,
+    required this.maidID,
+    required this.ratedBy,
+  }) : super(key: key);
+
+  bool haveIRatedThisMaid() {
+    for (int a = 0; a < this.ratedBy.length; a++) {
+      if (this.ratedBy[a] == StaticDataStore.id) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,35 +28,57 @@ class Rating extends StatelessWidget {
       child: Row(
         children: [
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              BlocProvider.of<MyMaidsBloc>(context).rateMaid(1, maidID);
+            },
             child: Icon(
                 (this.rating).round() >= 1 ? Icons.star : Icons.star_border,
+                size: 26,
                 color: Theme.of(context).primaryColor),
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              BlocProvider.of<MyMaidsBloc>(context).rateMaid(2, maidID);
+            },
             child: Icon(
                 (this.rating).round() >= 2 ? Icons.star : Icons.star_border,
+                size: 28,
                 color: Theme.of(context).primaryColor),
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              BlocProvider.of<MyMaidsBloc>(context).rateMaid(3, maidID);
+            },
             child: Icon(
                 (this.rating).round() >= 3 ? Icons.star : Icons.star_border,
+                size: 30,
                 color: Theme.of(context).primaryColor),
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              BlocProvider.of<MyMaidsBloc>(context).rateMaid(4, maidID);
+            },
             child: Icon(
                 (this.rating).round() >= 4 ? Icons.star : Icons.star_border,
+                size: 32,
                 color: Theme.of(context).primaryColor),
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              BlocProvider.of<MyMaidsBloc>(context).rateMaid(5, maidID);
+            },
             child: Icon(
                 (this.rating).round() >= 5 ? Icons.star : Icons.star_border,
+                size: 34,
                 color: Theme.of(context).primaryColor),
           ),
+          haveIRatedThisMaid()
+              ? Icon(
+                  Icons.done_all_rounded,
+                  color: Theme.of(context).primaryColor,
+                  // size: 34,
+                )
+              : SizedBox(),
         ],
       ),
     );

@@ -51,19 +51,11 @@ class MaidPostProvider {
     final headers = {"Authorization": "Bearer ${StaticDataStore.TOKEN}"};
     try {
       var response = await client.get(
-        Uri(
-          scheme: "http",
-          host: StaticDataStore.HOST,
-          port: StaticDataStore.PORT,
-          path: "/api/search/maids/",
-          queryParameters: {
-            "offset": offset,
-            "limit": 3,
-            "q": text,
-          },
-        ),
+        Uri.parse(StaticDataStore.URL +
+            "api/search/maids/?offset=$offset&limit=3&q=$text"),
         headers: headers,
       );
+      print("\n\n\n\n\n\n\n\n\n\n\n${response.body}\n\n\n\n\n\n\n\n\n\n\n");
       if (response.statusCode == 200 || response.statusCode == 201) {
         final body = jsonDecode(response.body) as List<dynamic>;
         final map = body.map<Map<String, dynamic>>((elem) {
@@ -71,12 +63,14 @@ class MaidPostProvider {
         }).toList();
         print(map);
         return map;
-      } else {
+      } else {  
+        print("\n\n\n\n\n\n\n\n\n\n\n${response.body}\n\n\n\n\n\n\n\n\n\n\n");
         return null;
       }
     } catch (e, a) {
       // print("  ERRORR ${e.toString()}");
       print(a);
+      print("\n\n\n\n\n\n\n\n\n\n\n${e.toString()}\n\n\n\n\n\n\n\n\n\n\n");
       return null;
     }
   }

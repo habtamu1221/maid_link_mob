@@ -47,4 +47,9 @@ class UserRepo {
   Future<SimpleMessage> changeProfilePicture(File image) {
     return this.provider.changeProfilePicture(image);
   }
+
+
+  Future<String> changeUsername(String username) {
+    return this.provider.changeUsername(username);
+  }
 }

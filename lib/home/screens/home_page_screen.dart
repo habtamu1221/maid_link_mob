@@ -19,17 +19,26 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     if (!once) {
-      BlocProvider.of<PostBloc>(context).loadMaids();
+      BlocProvider.of<PostBloc>(context).add(MaidPostEventLoad());
       this.once = true;
     }
+    if (StaticDataStore.role == Role.maid &&
+        (BlocProvider.of<MaidBloc>(context) is MaidBlocLoadingSuccess)) {
+      BlocProvider.of<MaidBloc>(context).add(MaidEventLoad());
+    }
+
+    final myMaidsBloc = BlocProvider.of<MyMaidsBloc>(context);
+    if (!(myMaidsBloc.state is MyMaidsLoadSuccess)) {
+      myMaidsBloc.getMyMaids();
+    }
     return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-        ),
-        drawer: Navigation(),
-        body: SafeArea(
-          child: Container(
-              child: Column(
+      appBar: AppBar(
+        elevation: 0,
+      ),
+      drawer: Navigation(),
+      body: SafeArea(
+        child: Container(
+          child: Column(
             children: [
               Expanded(
                 flex: 1,
@@ -51,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 15,
+                          fontSize: 20,
                         ),
                       ),
                       Positioned(
@@ -68,17 +77,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: TextField(
                             controller: this.searchController,
                             onChanged: (String text) {
-                              print("\n\n\n\n\n");
-                              print(StaticDataStore.TOKEN);
-                              print("\n\n\n\n\n");
                               if (text.length > 0) {
                                 BlocProvider.of<PostBloc>(context)
-                                    .searchMaids(text);
+                                    .add(MaidPostEventSearch(text));
                               } else {
                                 if (!(context.watch<PostBloc>()
                                     is MaidPostLoadSuccess)) {
                                   BlocProvider.of<PostBloc>(context)
-                                      .loadMaids();
+                                      .add(MaidPostEventLoad());
                                 }
                               }
                             },
@@ -107,7 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               Expanded(
-                flex: 6,
+                flex: 4,
                 child: Container(
                   // color: Theme.of(context).primaryColor,
                   height: MediaQuery.of(context).size.height * 0.7,
@@ -117,7 +123,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         builder: (context, state) {
                           if (state is MaidPostLoadSuccess) {
                             if (state.maids == null) {
-                              BlocProvider.of<PostBloc>(context).loadMaids();
+                              BlocProvider.of<PostBloc>(context)
+                                  .add(MaidPostEventLoad());
                               return Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -160,11 +167,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(" loading ...",
-                                      style: TextStyle(
-                                        color: Colors.green,
-                                        fontWeight: FontWeight.bold,
-                                      )),
+                                  Text(
+                                    " loading ...",
+                                    style: TextStyle(
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                   CircularProgressIndicator(),
                                 ],
                               ),
@@ -185,14 +194,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     onTap: () {
                                       BlocProvider.of<PostBloc>(context)
-                                          .loadMaids();
+                                          .add(MaidPostEventLoad());
                                     },
                                   ),
                                 ],
                               ),
                             );
                           } else {
-                            BlocProvider.of<PostBloc>(context).loadMaids();
+                            BlocProvider.of<PostBloc>(context)
+                                .add(MaidPostEventLoad());
                             return Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -211,16 +221,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           }
                         },
                       ),
-                      // ListView.builder(
-                      //   // itemCount :
-                      //   itemBuilder: (context , index){})),
-                      // PostItem(),
                     ],
                   ),
                 ),
               ),
             ],
-          )),
-        ));
+          ),
+        ),
+      ),
+    );
   }
 }

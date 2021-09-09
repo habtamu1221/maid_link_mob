@@ -60,6 +60,9 @@ class _LoginState extends State<Login> {
       BlocProvider.of<ThemeBloc>(context).setTheme(StaticDataStore.role.index);
       Navigator.of(context)
           .pushNamedAndRemoveUntil(HomeScreen.ROUTE, (route) => false);
+      if (StaticDataStore.role == 1) {
+        BlocProvider.of<MaidBloc>(context).add(MaidEventLoad());
+      }
     } else {
       setState(() {
         this.loginProgressColor = Colors.red;

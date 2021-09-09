@@ -58,6 +58,7 @@ Maid maid = Maid(
     "Four ",
   ],
   works: [],
+  ratedBy: [],
   profileImages: [
     "images/posts/RrSeQ.png",
     "images/posts/7_Tb1.png",

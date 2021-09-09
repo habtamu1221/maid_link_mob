@@ -1,18 +1,15 @@
 import '../../libs.dart';
 
 class MaidPictures extends StatelessWidget {
-  List<String> pictures = [
-    "images/posts/RrSeQ.png",
-    "images/posts/7_Tb1.png",
-    "images/posts/LLSjw.png",
-    "images/posts/oNjVE.png"
-  ];
-  MaidPictures({Key? key, required this.pictures}) : super(key: key);
+  List<String> pictures;
+  String ownerID;
+  MaidPictures({Key? key, required this.pictures, required this.ownerID})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(30),
+      borderRadius: BorderRadius.circular(10),
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(
@@ -23,7 +20,7 @@ class MaidPictures extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           itemBuilder: (contex, index) {
             return ImageItem(
-              ownerID: "6125f135e831b1715dcb7056",
+              ownerID: ownerID,
               url: pictures[index],
             );
           },

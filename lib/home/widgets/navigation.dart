@@ -41,29 +41,36 @@ class _NavigationState extends State<Navigation> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                final image = pickImage(context);
-                                // if (image != null) {
-                                image.then((value) async {
-                                  final file = File(value!.path);
-                                  final simpleMessage =
-                                      await BlocProvider.of<UserBloc>(context)
-                                          .changeProfilePicture(file!);
+                                // final image = pickImage(context);
+                                // // if (image != null) {
+                                // image.then((value) async {
+                                //   final file = File(value!.path);
+                                //   final simpleMessage =
+                                //       await BlocProvider.of<UserBloc>(context)
+                                //           .changeProfilePicture(file!);
 
-                                  if (simpleMessage.success) {
-                                    // setState(() {
-                                    //   imageFile = file;
-                                    // });
-                                    print(simpleMessage.success);
-                                    print("changed");
-                                    print(StaticDataStore.URL +
-                                        (state as UserLoggedIn).user!.imageUrl);
-                                  } else {
-                                    print(StaticDataStore.URL +
-                                        (state as UserLoggedIn).user!.imageUrl);
-                                    // do notiong
-                                  }
-                                });
+                                //   if (simpleMessage.success) {
+                                //     // setState(() {
+                                //     //   imageFile = file;
+                                //     // });
+                                //     print(simpleMessage.success);
+                                //     print("changed");
+                                //     print(StaticDataStore.URL +
+                                //         (state as UserLoggedIn).user!.imageUrl);
+                                //   } else {
+                                //     print(StaticDataStore.URL +
+                                //         (state as UserLoggedIn).user!.imageUrl);
+                                //     // do notiong
+                                //   }
+                                // });
                                 // }
+                                if ((state as UserLoggedIn).user!.imageUrl !=
+                                        null &&
+                                    (state as UserLoggedIn).user!.imageUrl !=
+                                        "") {
+                                  showImage(context,
+                                      (state as UserLoggedIn).user!.imageUrl);
+                                }
                               },
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(100),
@@ -171,6 +178,11 @@ class _NavigationState extends State<Navigation> {
                         ? ListTile(
                             leading: Icon(Icons.verified_user),
                             title: Text("My Maids"),
+                            onTap: () {
+                              Navigator.of(context).pushNamed(
+                                MyMaids.Route,
+                              );
+                            },
                           )
                         : SizedBox(),
                     StaticDataStore.role == Role.admin

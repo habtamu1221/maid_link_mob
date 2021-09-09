@@ -7,7 +7,7 @@ class SeeMore extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        BlocProvider.of<PostBloc>(context).loadMaids();
+        BlocProvider.of<PostBloc>(context).add(MaidPostEventLoad());
       },
       child: Container(
         margin: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 20),

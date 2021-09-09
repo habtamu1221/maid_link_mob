@@ -9,6 +9,7 @@ class Maid extends User {
   late List<String> profileImages;
   late double rates;
   late int rateCount;
+  late List<String> ratedBy;
   late List<Work> works;
   DUser? user;
   Maid({
@@ -21,6 +22,7 @@ class Maid extends User {
     required this.user,
     required this.profileImages,
     required this.works,
+    required this.ratedBy,
   });
 
   factory Maid.fromJson(Map<String, dynamic> json) {
@@ -41,14 +43,16 @@ class Maid extends User {
       return Work.fromJson(el);
     }).toList();
     print(json['rates']);
+    final rateResult = RateResult.fromJson(json);
     return Maid(
       phone: json["phone"],
       address: json["address"],
       bio: json["bio"],
       carrers: json["carrers"] ?? [],
-      rates: 0,
+      rates: rateResult.rates,
+      ratedBy: rateResult.ratedBy,
       // json["rates"] != null ? double.parse(json["rates"]) ?? 0 : 0,
-      rateCount: 0,
+      rateCount: rateResult.ratesCount,
       // json["rate_count"] != null ? int.parse(json["rate_count"]) ?? 0 : 0,
       user: DUser.fromJson(json["user"] as Map<String, dynamic>),
       profileImages: (json["profile_images"] as List<dynamic>).map(
@@ -68,6 +72,7 @@ class Maid extends User {
       "carrers": this.carrers,
       "rates": this.rates, //
       "rate_count": this.rateCount,
+      "rated_by": this.ratedBy,
       // "username": this.username,
       // "email": this.email, //
       // "image_url": this.imageUrl, //

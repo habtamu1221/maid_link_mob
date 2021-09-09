@@ -13,6 +13,9 @@ class MyProfile extends StatefulWidget {
 
 class _MyProfileState extends State<MyProfile> {
   File? imageFile;
+  bool editing = false;
+  Color buttonColor = Colors.grey;
+  TextEditingController usernameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -20,19 +23,35 @@ class _MyProfileState extends State<MyProfile> {
       child: Container(
         child: BlocBuilder<UserBloc, UserState>(
           builder: (context, state) {
+            usernameController.text = (state as UserLoggedIn).user!.username;
             return Row(children: [
               Expanded(
                 flex: 1,
                 child: GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     final image = pickImage(context);
-                    if (image != null) {
-                      image.then((value) {
-                        setState(() {
-                          imageFile = File(value!.path);
-                        });
-                      });
-                    }
+                    // if (image != null) {
+                    image.then((value) async {
+                      final file = File(value!.path);
+                      final simpleMessage =
+                          await BlocProvider.of<UserBloc>(context)
+                              .changeProfilePicture(file!);
+
+                      if (simpleMessage.success) {
+                        // setState(() {
+                        //   imageFile = file;
+                        // });
+                        print(simpleMessage.success);
+                        print("changed");
+                        print(StaticDataStore.URL +
+                            (state as UserLoggedIn).user!.imageUrl);
+                      } else {
+                        print(StaticDataStore.URL +
+                            (state as UserLoggedIn).user!.imageUrl);
+                        // do notiong
+                      }
+                    });
+                    // }
                   },
                   child: Container(
                     // margin: EdgeInsets.symmetric(
@@ -104,14 +123,68 @@ class _MyProfileState extends State<MyProfile> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "ID          : ${(state as UserLoggedIn).user.id}",
+                      "User name :",
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
                       ),
                     ),
-                    Text("Username : ${(state as UserLoggedIn).user.username}"),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Text("Username  "),
+                        // Text(
+                        //   "${(state as UserLoggedIn).user.username}",
+                        // ),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          child: TextField(
+                            enabled: editing,
+                            controller: this.usernameController,
+                            cursorColor: Theme.of(context).cursorColor,
+                            decoration: InputDecoration(
+                              hintText:
+                                  "${(state as UserLoggedIn).user.username}",
+                              // labelText: ' Username ',
+                              // labelStyle: TextStyle(
+                              //   color: Theme.of(context).primaryColorLight,
+                              // ),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).primaryColorLight),
+                              ),
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              this.editing = !this.editing;
+                              this.buttonColor = this.editing
+                                  ? Theme.of(context).primaryColor
+                                  : Colors.grey;
+                            });
+                            if (!this.editing &&
+                                usernameController.text.length > 5 &&
+                                usernameController.text !=
+                                    (state as UserLoggedIn).user.username) {
+                              BlocProvider.of<UserBloc>(context)
+                                  .changeUsername(usernameController.text);
+                            }
+                          },
+                          icon: Icon(
+                            this.editing ? Icons.check : Icons.edit,
+                            color: buttonColor,
+                          ),
+                        ),
+                      ],
+                    ),
                     Text("Email    : ${(state as UserLoggedIn).user.email}"),
-
+                    Text(
+                      "ID : ${(state as UserLoggedIn).user.id}",
+                      style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
                     // Padding(
                     //   padding: EdgeInsets.all(10),
                     //   child: Text("${(state as UserLoggedIn).user }"),

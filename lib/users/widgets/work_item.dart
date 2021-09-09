@@ -6,61 +6,91 @@ class WorksItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("The  Length of the list is ${works.length}");
     return Container(
-      child: ListView.builder(
-        itemCount: works.length,
-        itemBuilder: (context, index) {
-          return Container(
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Shift"),
-                    Text(
-                      "${works[index].shift}",
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.black38,
+        ),
+      ),
+      child: Column(
+        children: [
+          ...this.works.map<Container>((e) {
+            return Container(
+              // height: 100,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black38,
+                ),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              width: double.infinity,
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: Text(
+                      "Shift",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Type"),
-                    Text("${works[index].type}"),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Experiance"),
-                    Text("${works[index].experiance}")
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Experties "),
-                    Container(
+                    title: Text(
+                      "${StaticDataStore.Shifts[e.shift]}",
+                    ),
+                  ),
+                  ListTile(
+                    leading: Text(
+                      "Type",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    title: Text("${StaticDataStore.WorkTypes[e.type - 1]}"),
+                  ),
+                  ListTile(
+                    leading: Text(
+                      "Experiance",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    title: Text("${e.experiance}"),
+                  ),
+                  ListTile(
+                    leading: Text(
+                      "Experties ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    title: Container(
                       decoration: BoxDecoration(
                         border: Border.all(
                           color: Colors.black,
                         ),
                       ),
-                      child: ListView.builder(
-                        itemCount: works[index].experiance.length,
-                        itemBuilder: (context, ind) {
+                      child: Column(children: [
+                        ...e.experties.map((se) {
                           return Text(
-                            "${works[index].experiance[ind]}",
+                            "$se",
                           );
-                        },
-                      ),
-                    )
-                  ],
-                ),
-              ],
-            ),
-          );
-        },
+                        })
+                      ]),
+                      //     ListView.builder(
+                      //   itemCount: e.experiance.length,
+                      //   itemBuilder: (context, ind) {
+                      //     return Text(
+                      //       "${e.experties[ind]}",
+                      //     );
+                      //   },
+                      // ),
+                    ),
+                  )
+                ],
+              ),
+            );
+          })
+        ],
       ),
     );
   }

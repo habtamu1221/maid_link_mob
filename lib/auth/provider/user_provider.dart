@@ -193,4 +193,40 @@ class UserProvider {
       return SimpleMessage(msg: "server error ", success: false);
     }
   }
+
+  Future<String> changeUsername(String username) async {
+    final headers = {"Authorization", "Bearer ${StaticDataStore.TOKEN}"};
+    // var stream = new http.ByteStream(DelegatingStream.typed(_image.openRead()));
+    print("------------------____CALLED------------------------------");
+    try {
+      Map<String, String> header = {
+        "Authorization": "Bearer " + StaticDataStore.TOKEN,
+      };
+      // header.
+      var response = await client.post(
+        Uri(
+            scheme: "http",
+            host: HOST,
+            port: PORT,
+            path: "/api/user/username/new/"),
+        headers: header,
+        body: jsonEncode(
+          {
+            "username": username,
+          },
+        ),
+      );
+      print("${response.body}   ${response.statusCode}  ");
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print("OK");
+        final jsonBody = jsonDecode(response.body);
+        print(jsonBody);
+        return jsonBody["username"] as String;
+      }
+      return "";
+    } catch (e) {
+      print(e.toString());
+      return "";
+    }
+  }
 }

@@ -5,3 +5,4 @@ export 'model/model.dart';
 export 'provider/provider.dart';
 export 'repository/repository.dart';
 export 'bloc_state/bloc_state.dart';
+export 'event/event.dart';
