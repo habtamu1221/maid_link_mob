@@ -10,3 +10,4 @@ export 'payment_entry.dart';
 export 'edit_user.dart';
 export 'add_profile_image.dart';
 export 'edit_maid_info.dart';
+export 'work_profile_item.dart';

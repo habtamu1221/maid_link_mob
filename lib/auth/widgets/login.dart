@@ -123,6 +123,7 @@ class _LoginState extends State<Login> {
               Container(
                 child: TextField(
                   controller: this.emailController,
+                  keyboardType: TextInputType.emailAddress,
                   cursorColor: Theme.of(context).cursorColor,
                   decoration: InputDecoration(
                     icon: Icon(Icons.email),

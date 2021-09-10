@@ -83,6 +83,7 @@ class _RegisterClientState extends State<RegisterClient> {
               Container(
                 child: TextField(
                   controller: usernameController,
+                  keyboardType: TextInputType.text,
                   cursorColor: Theme.of(context).cursorColor,
                   decoration: InputDecoration(
                     icon: Icon(Icons.person),
@@ -103,6 +104,7 @@ class _RegisterClientState extends State<RegisterClient> {
                 // ),
                 child: TextField(
                   controller: emailController,
+                  keyboardType: TextInputType.emailAddress,
                   cursorColor: Theme.of(context).cursorColor,
                   decoration: InputDecoration(
                     icon: Icon(Icons.email),

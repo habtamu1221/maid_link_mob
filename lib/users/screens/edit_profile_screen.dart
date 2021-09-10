@@ -29,7 +29,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             // BlocBuilder<UserBloc, UserState>(builder: (context, state) {
             //   return EditUserInfo(user: (state as UserLoggedIn).user);
             // })
-            EditMaidInfo()
+            EditMaidInfo(),
+            Center(
+              child: Text(
+                "Edit Works",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 23,
+                ),
+              ),
+            )
           ],
         ),
       ),

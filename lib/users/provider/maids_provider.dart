@@ -39,42 +39,155 @@ class MaidProvider {
   //   return null;
   // }
 
-  // Future<Map<String, dynamic>?> registerClient(
-  //     String username, String email, String password) async {
-  //   try {
-  //     Map<String, String> header = {
-  //       "Authorization": "Bearer " + StaticDataStore.TOKEN,
-  //     };
-  //     // header.
-  //     var response = await client.post(
-  //       Uri(scheme: "http", host: HOST, port: PORT, path: "/api/client/new/"),
-  //       headers: header,
-  //       body: jsonEncode({
-  //         "username": username,
-  //         "email": email,
-  //         "password": password,
-  //       }),
-  //     );
-  //     print(response.body);
-  //     if (response.statusCode == 201 || response.statusCode == 200) {
-  //       final body = jsonDecode(response.body);
-  //       if (body['success']) {
-  //         final user = body["user"]['user'];
-  //         return user;
-  //       } else {
-  //         return body;
-  //       }
-  //     } else if (response.statusCode == 500 ||
-  //         response.statusCode == 400 ||
-  //         response.statusCode == 401 ||
-  //         response.statusCode == 501) {
-  //       print(jsonDecode(response.body));
-  //       return jsonDecode(response.body);
-  //     }
-  //   } catch (e, a) {
-  //     return null;
-  //   }
-  // }
+  Future<Map<String, dynamic>?> updateMaid(MaidUpdate update) async {
+    try {
+      Map<String, String> header = {
+        "Authorization": "Bearer " + StaticDataStore.TOKEN,
+      };
+      print("${update.phone}, ${update.bio}, ${update.address}");
+      var response = await client.put(
+        Uri(
+          scheme: "http",
+          host: HOST,
+          port: PORT,
+          path: "/api/maid/",
+        ),
+        headers: header,
+        body: jsonEncode({
+          "id": StaticDataStore.id,
+          "phone": update.phone,
+          "bio": update.bio,
+          "address": update.address,
+        }),
+      );
+      print(response.body);
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        final body = jsonDecode(response.body);
+        print("Updating the maid results $body");
+        return body;
+      } else if (response.statusCode == 500 ||
+          response.statusCode == 400 ||
+          response.statusCode == 401 ||
+          response.statusCode == 501) {
+        print("Updating the maid results ${response.statusCode}");
+        return null;
+      } else {
+        print("Updating the maid results ${response.statusCode}");
+      }
+    } catch (e, a) {
+      print("Updating the maid results ${e.toString()}");
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> createWork(Work work) async {
+    try {
+      Map<String, String> header = {
+        "Authorization": "Bearer " + StaticDataStore.TOKEN,
+      };
+      print(
+          "${work.experties}  ${work.experiance} , ${work.type}  ${work.no}  ${work.shift}");
+      var response = await client.post(
+        Uri(
+          scheme: "http",
+          host: HOST,
+          port: PORT,
+          path: "/api/maid/work/new/",
+        ),
+        headers: header,
+        body: jsonEncode({
+          "no": 0,
+          "shift": work.shift,
+          "type": work.type,
+          "experiance": work.experiance,
+          "experties": work.experties,
+        }),
+      );
+      print(" ${response.body} , ${response.statusCode}");
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        final body = jsonDecode(response.body);
+        return body;
+      } else if (response.statusCode == 500 ||
+          response.statusCode == 400 ||
+          response.statusCode == 401 ||
+          response.statusCode == 501) {
+        return null;
+      } else {
+        return null;
+      }
+    } catch (e, a) {
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> updateWork(Work work) async {
+    try {
+      Map<String, String> header = {
+        "Authorization": "Bearer " + StaticDataStore.TOKEN,
+      };
+      var response = await client.put(
+        Uri(
+          scheme: "http",
+          host: HOST,
+          port: PORT,
+          path: "/api/maid/work/",
+        ),
+        headers: header,
+        body: jsonEncode({
+          "no": work.no,
+          "shift": work.shift,
+          "type": work.type,
+          "experiance": work.experiance,
+          "experties": work.experties,
+        }),
+      );
+      // print(" ${response.body} , ${response.statusCode}");
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        final body = jsonDecode(response.body);
+        return body;
+      } else if (response.statusCode == 500 ||
+          response.statusCode == 400 ||
+          response.statusCode == 401 ||
+          response.statusCode == 501) {
+        return null;
+      } else {
+        return null;
+      }
+    } catch (e, a) {
+      return null;
+    }
+  }
+
+  Future<bool> deleteWork(int no) async {
+    try {
+      Map<String, String> header = {
+        "Authorization": "Bearer " + StaticDataStore.TOKEN,
+      };
+      var response = await client.delete(
+        Uri.parse(
+          StaticDataStore.URL + "api/maid/work/?no=$no",
+        ),
+        headers: header,
+      );
+      // print(" ${response.body} , ${response.statusCode}");
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        final body = jsonDecode(response.body);
+        if (body["msg"] != "") {
+          return true;
+        }
+        return false;
+      } else if (response.statusCode == 500 ||
+          response.statusCode == 400 ||
+          response.statusCode == 401 ||
+          response.statusCode == 501) {
+        return false;
+      } else {
+        return false;
+      }
+    } catch (e, a) {
+      return false;
+    }
+  }
 
   Future<Map<String, dynamic>?> getMaid() async {
     try {

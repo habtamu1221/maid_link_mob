@@ -1,35 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import "libs.dart";
 
 void main() {
-  runApp(MultiBlocProvider(providers: [
-    BlocProvider(
-      create: (context) => UserBloc(
-        UserRepo(
-          UserProvider(),
-        ),
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
+    runApp(
+      MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => UserBloc(
+              UserRepo(
+                UserProvider(),
+              ),
+            ),
+          ),
+          //
+          BlocProvider(
+            create: (contet) {
+              return ThemeBloc();
+            },
+          ),
+          BlocProvider(
+            create: (contet) {
+              return PostBloc(repo: MaidPostRepo(provider: MaidPostProvider()));
+            },
+          ),
+          BlocProvider(
+            create: (contet) {
+              return MaidBloc(repo: MaidRepo(provider: MaidProvider()));
+            },
+          ),
+          BlocProvider(create: (contxt) {
+            return MyMaidsBloc(MyMaidsRepo(MyMaidsProvider()));
+          }),
+          // AdminMaidsBloc
+          BlocProvider(create: (contxt) {
+            return AdminMaidsBloc(
+                AdminMaidRepo(provider: AdminMaidsProvider()));
+          }),
+          BlocProvider(
+            create: (contxt) {
+              return AdminAdminsBloc(
+                  AdminAdminRepo(provider: AdminAdminsProvider()));
+            },
+          ),
+        ],
+        child: MainApp(),
       ),
-    ),
-    //
-    BlocProvider(
-      create: (contet) {
-        return ThemeBloc();
-      },
-    ),
-    BlocProvider(
-      create: (contet) {
-        return PostBloc(repo: MaidPostRepo(provider: MaidPostProvider()));
-      },
-    ),
-    BlocProvider(
-      create: (contet) {
-        return MaidBloc(repo: MaidRepo(provider: MaidProvider()));
-      },
-    ),
-    BlocProvider(create: (contxt) {
-      return MyMaidsBloc(MyMaidsRepo(MyMaidsProvider()));
-    })
-  ], child: MainApp()));
+    );
+  });
 }
 
 class MainApp extends StatelessWidget {
@@ -74,7 +95,25 @@ class MainApp extends StatelessWidget {
         },
         EditProfileScreen.Route: (BuildContext context) {
           return EditProfileScreen();
-        }
+        },
+        MyWorks.Route: (BuildContext context) {
+          return MyWorks();
+        },
+        AddWorkProfileScreen.Route: (BuildContext context) {
+          return AddWorkProfileScreen();
+        },
+        AdminMaids.Route: (BuildContext context) {
+          return AdminMaids();
+        },
+        AdminMaidRegisterScreen.Route: (BuildContext context) {
+          return AdminMaidRegisterScreen();
+        },
+        AdminAdmins.Route: (BuildContext context) {
+          return AdminAdmins();
+        },
+        AdminAdminRegisterScreen.Route: (BuildContext context) {
+          return AdminAdminRegisterScreen();
+        },
       },
     );
     //   },

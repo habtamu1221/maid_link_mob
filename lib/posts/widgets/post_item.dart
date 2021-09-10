@@ -1,16 +1,24 @@
 import '../../libs.dart';
 
-class PostItem extends StatelessWidget {
+class PostItem extends StatefulWidget {
   final Maid maid;
   PostItem({Key? key, required this.maid}) : super(key: key);
 
+  @override
+  State<PostItem> createState() {
+    return _PostItemState();
+  }
+}
+
+class _PostItemState extends State<PostItem> {
+  bool showmore = false;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         // post item is clicked and i am gonna do some thing .
-        Navigator.of(context)
-            .pushNamed(MaidProfileScreen.Route, arguments: {"maid": this.maid});
+        Navigator.of(context).pushNamed(MaidProfileScreen.Route,
+            arguments: {"maid": widget.maid});
       },
       child: Container(
         width: double.infinity,
@@ -34,11 +42,12 @@ class PostItem extends StatelessWidget {
                     child: Container(
                       child: GestureDetector(
                         onTap: () {},
-                        child: maid.user != null &&
-                                maid.user!.imageUrl != null &&
-                                maid.user!.imageUrl != ""
+                        child: widget.maid.user != null &&
+                                widget.maid.user!.imageUrl != null &&
+                                widget.maid.user!.imageUrl != ""
                             ? Image.network(
-                                StaticDataStore.URL + maid.user!.imageUrl,
+                                StaticDataStore.URL +
+                                    widget.maid.user!.imageUrl,
                                 height: 65,
                                 width: 65,
                               )
@@ -51,7 +60,7 @@ class PostItem extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    maid.user!.username,
+                    widget.maid.user!.username,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
@@ -59,7 +68,8 @@ class PostItem extends StatelessWidget {
                 ],
               ),
             ),
-            maid.profileImages != null && maid.profileImages.length > 0
+            widget.maid.profileImages != null &&
+                    widget.maid.profileImages.length > 0
                 ? Container(
                     height: 400,
                     width: double.infinity,
@@ -69,13 +79,14 @@ class PostItem extends StatelessWidget {
                         Container(
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            itemCount: maid.profileImages != null &&
-                                    maid.profileImages.length > 0
-                                ? maid.profileImages.length
+                            itemCount: widget.maid.profileImages != null &&
+                                    widget.maid.profileImages.length > 0
+                                ? widget.maid.profileImages.length
                                 : 0,
                             itemBuilder: (conte, ind) {
                               return Image.network(
-                                StaticDataStore.URL + maid.profileImages[ind],
+                                StaticDataStore.URL +
+                                    widget.maid.profileImages[ind],
                                 height: 200,
                               );
                             },
@@ -121,9 +132,36 @@ class PostItem extends StatelessWidget {
                     ),
                   )
                 : SizedBox(),
-            Text("${maid.bio ?? ""}"),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                !showmore &&
+                        widget.maid.bio != null &&
+                        widget.maid.bio.length > 50
+                    ? widget.maid.bio.substring(0, 20) + " ... "
+                    : "${widget.maid.bio ?? ""}",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            widget.maid.bio != null && widget.maid.bio.length > 50
+                ? FlatButton(
+                    onPressed: () {
+                      setState(() {
+                        showmore = !showmore;
+                      });
+                    },
+                    child: Text(
+                      showmore ? "show less" : "show more",
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  )
+                : SizedBox(),
             RatingShowOnly(
-              rating: maid.rates,
+              rating: widget.maid.rates,
             ),
             SizedBox(height: 10),
           ],

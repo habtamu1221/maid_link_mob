@@ -1,10 +1,10 @@
 class Work {
   String? ownerID;
-  final int no;
-  final int shift;
-  final int type;
-  final String experiance;
-  final List<String> experties;
+  int no;
+  int shift;
+  int type;
+  String experiance;
+  List<String> experties;
 
   Work({
     this.ownerID,
@@ -16,8 +16,6 @@ class Work {
   });
 
   factory Work.fromJson(Map<String, dynamic> json) {
-    print("\n\n\n\n$json\n\n${json['NO']}\n\n");
-
     return Work(
       no: int.parse("${json["NO"]}"),
       shift: int.parse("${json['Shift']}"),

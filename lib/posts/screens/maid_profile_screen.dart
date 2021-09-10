@@ -73,7 +73,7 @@ class _MaidProfileScreenState extends State<MaidProfileScreen> {
                     : SizedBox(),
                 // AddPicture()
                 UserProfile(user: maid!.user),
-                (StaticDataStore.role == Role.maid &&
+                (StaticDataStore.role == Role.client &&
                             maidExistsInMyMaidsList(context, maid!.user!.id)) ||
                         StaticDataStore.role == Role.admin
                     ? MaidProfile(

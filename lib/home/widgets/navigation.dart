@@ -28,8 +28,6 @@ class _NavigationState extends State<Navigation> {
                   children: [
                     SizedBox(height: 100),
                     Container(
-                      // width: 100,
-                      // height: 100,
                       decoration: BoxDecoration(),
                       width: double.infinity,
                       padding: EdgeInsets.all(20),
@@ -41,29 +39,6 @@ class _NavigationState extends State<Navigation> {
                           children: [
                             GestureDetector(
                               onTap: () async {
-                                // final image = pickImage(context);
-                                // // if (image != null) {
-                                // image.then((value) async {
-                                //   final file = File(value!.path);
-                                //   final simpleMessage =
-                                //       await BlocProvider.of<UserBloc>(context)
-                                //           .changeProfilePicture(file!);
-
-                                //   if (simpleMessage.success) {
-                                //     // setState(() {
-                                //     //   imageFile = file;
-                                //     // });
-                                //     print(simpleMessage.success);
-                                //     print("changed");
-                                //     print(StaticDataStore.URL +
-                                //         (state as UserLoggedIn).user!.imageUrl);
-                                //   } else {
-                                //     print(StaticDataStore.URL +
-                                //         (state as UserLoggedIn).user!.imageUrl);
-                                //     // do notiong
-                                //   }
-                                // });
-                                // }
                                 if ((state as UserLoggedIn).user!.imageUrl !=
                                         null &&
                                     (state as UserLoggedIn).user!.imageUrl !=
@@ -179,9 +154,13 @@ class _NavigationState extends State<Navigation> {
                             leading: Icon(Icons.verified_user),
                             title: Text("My Maids"),
                             onTap: () {
-                              Navigator.of(context).pushNamed(
-                                MyMaids.Route,
-                              );
+                              StaticDataStore.role == Role.client
+                                  ? Navigator.of(context).pushNamed(
+                                      MyMaids.Route,
+                                    )
+                                  : Navigator.of(context).pushNamed(
+                                      AdminMaids.Route,
+                                    );
                             },
                           )
                         : SizedBox(),
@@ -191,24 +170,26 @@ class _NavigationState extends State<Navigation> {
                             title: Text("Admins"),
                             onTap: () {
                               Navigator.of(context)
-                                  .pushNamed(AdminsScreen.Route);
+                                  .pushNamed(AdminAdmins.Route);
                             },
                           )
                         : SizedBox(),
-                    StaticDataStore.role == Role.admin
+                    // StaticDataStore.role == Role.admin
+                    //     ? ListTile(
+                    //         leading:
+                    //             Icon(Icons.supervised_user_circle_outlined),
+                    //         title: Text("Clients"))
+                    //     : SizedBox(),
+                    StaticDataStore.role == Role.maid
                         ? ListTile(
-                            leading:
-                                Icon(Icons.supervised_user_circle_outlined),
-                            title: Text("Clients"))
+                            leading: Icon(Icons.list_rounded),
+                            title: Text("Work Profiles"),
+                            onTap: () {
+                              Navigator.of(context).pushNamed(
+                                MyWorks.Route,
+                              );
+                            })
                         : SizedBox(),
-                    ListTile(
-                        leading: Icon(Icons.privacy_tip_outlined),
-                        title: Text("Security"),
-                        onTap: () {
-                          Navigator.of(context).pushNamed(
-                            SettingScreen.Route,
-                          );
-                        }),
                     ListTile(
                         leading: Icon(Icons.logout),
                         title: Text("Logout"),

@@ -78,6 +78,48 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   })
                 : SizedBox(),
             MyProfile(),
+            // UserProfile(user: maid!.user),
+            (StaticDataStore.role == Role.maid)
+                ? BlocBuilder<MaidBloc, MaidBlocState>(
+                    builder: (context, state) {
+                    if (state is MaidBlocLoadingSuccess) {
+                      return MaidProfile(
+                        maid: state.maid,
+                      );
+                    }
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  })
+                : SizedBox(),
+// ----------------------------------------------
+            (StaticDataStore.role == Role.maid)
+                ? BlocBuilder<MaidBloc, MaidBlocState>(
+                    builder: (context, state) {
+                    if (state is MaidBlocLoadingSuccess) {
+                      return WorksItems(works: state.maid.works);
+                    }
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  })
+                : SizedBox(),
+            (StaticDataStore.role == Role.maid)
+                ? BlocBuilder<MaidBloc, MaidBlocState>(
+                    builder: (context, state) {
+                    if (state is MaidBlocLoadingSuccess) {
+                      return Rating(
+                        rating: state.maid.rates,
+                        maidID: state.maid.user!.id,
+                        ratedBy: state.maid.ratedBy,
+                      );
+                    }
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  })
+                : SizedBox(),
+
             //
             //
           ],

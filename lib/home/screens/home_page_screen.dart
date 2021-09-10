@@ -26,10 +26,18 @@ class _HomeScreenState extends State<HomeScreen> {
         (BlocProvider.of<MaidBloc>(context) is MaidBlocLoadingSuccess)) {
       BlocProvider.of<MaidBloc>(context).add(MaidEventLoad());
     }
-
-    final myMaidsBloc = BlocProvider.of<MyMaidsBloc>(context);
-    if (!(myMaidsBloc.state is MyMaidsLoadSuccess)) {
-      myMaidsBloc.getMyMaids();
+    // AdminMaidsBloc
+    if (StaticDataStore.role == Role.client) {
+      final myMaidsBloc = BlocProvider.of<MyMaidsBloc>(context);
+      if (!(myMaidsBloc.state is MyMaidsLoadSuccess)) {
+        myMaidsBloc.getMyMaids();
+      }
+    }
+    if (StaticDataStore.role == Role.admin) {
+      final adminMaidsBloc = BlocProvider.of<AdminMaidsBloc>(context);
+      if (!(adminMaidsBloc.state is AdminMaidsLoadSuccess)) {
+        adminMaidsBloc.loadAdminMaids();
+      }
     }
     return Scaffold(
       appBar: AppBar(
@@ -139,12 +147,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               );
                             } else {
-                              // for (int b = 0;
-                              //     b < (state as MaidPostLoadSuccess).maids.length;
-                              //     b++) {
-                              //   PostItem((state as MaidPostLoadSuccess).maids[b])
-                              // }
-                              print("\n\n\n\nLOOOOADDEEDDD\n\n\n\n");
                               return Container(
                                 width: double.infinity,
                                 height: 200,
@@ -155,7 +157,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       return SeeMore();
                                     }
                                     return PostItem(
-                                      maid: (state).maids[index],
+                                      maid: (state as MaidPostLoadSuccess)
+                                          .maids[index],
                                     );
                                     // return SizedBox();
                                   },
