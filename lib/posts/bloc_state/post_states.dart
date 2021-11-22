@@ -14,7 +14,7 @@ class MaidPostLoadingFailed extends MaidPostState {}
 class SearchResultSuccess extends MaidPostState {
   List<Maid> maids;
   // MaidPostState oldState;
-  SearchResultSuccess({required this.maids,});//equired this.oldState});
+  SearchResultSuccess({required this.maids});//equired this.oldState});
 }
 
 class SearchResultFailure extends MaidPostState {}

@@ -140,7 +140,6 @@ class UserProvider {
           response.statusCode == 400 ||
           response.statusCode == 401 ||
           response.statusCode == 501) {
-        print(jsonDecode(response.body));
         return false;
       }
       return false;

@@ -1,4 +1,2 @@
-export 'maid_profile_screen.dart';
-export "my_maids.dart";
-export 'admins_maids_screen.dart';
-export 'admin_admins_screen.dart';
+export "add_work_profile_screen.dart";
+export "work_profiles.dart";

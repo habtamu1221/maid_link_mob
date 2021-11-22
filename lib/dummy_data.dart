@@ -1,4 +1,8 @@
-import '../../libs.dart';
+// import '../../libs.dart';
+// import 'dart:ui';
+
+import 'package:maidlink/maids/model/maid.dart';
+import 'package:maidlink/posts/model/work_model.dart';
 
 List<Work> works = [
   Work.fromJson(

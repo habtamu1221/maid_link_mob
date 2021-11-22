@@ -89,9 +89,10 @@ class _AuthScreenState extends State<AuthScreen> {
                               ),
                             ),
                           ],
-                        )),
+                        ),
+                        ),
                   ),
-                ]),
+                ] , ),
               ),
             ),
           ),
@@ -101,26 +102,27 @@ class _AuthScreenState extends State<AuthScreen> {
               // color: Colors.black,
               width: double.infinity,
               child: PageView(
-                  controller: controller,
-                  onPageChanged: (int index) {
-                    if (index == 0) {
-                      setState(() {
-                        this.where = "Login";
-                        this.to = "Register";
-                        this.index = 2;
-                      });
-                    } else {
-                      setState(() {
-                        this.where = "Register";
-                        this.to = "Login";
-                        this.index = 1;
-                      });
-                    }
-                  },
-                  children: [
-                    Login(gotoRegistration: change),
-                    RegisterClient(gotoLogin: change)
-                  ]),
+                controller: controller,
+                onPageChanged: (int index) {
+                  if (index == 0) {
+                    setState(() {
+                      this.where = "Login";
+                      this.to = "Register";
+                      this.index = 2;
+                    });
+                  } else {
+                    setState(() {
+                      this.where = "Register";
+                      this.to = "Login";
+                      this.index = 1;
+                    });
+                  }
+                },
+                children: [
+                  Login(gotoRegistration: change),
+                  RegisterClient(gotoLogin: change)
+                ],
+              ),
             ),
           ),
         ]),
