@@ -2,14 +2,14 @@ import '../../libs.dart';
 
 class MyMaids extends StatelessWidget {
   static const String Route = '/my_maids';
-  final MyMaidsRepo repo;
+  final MyRatingRepo repo;
   const MyMaids({Key? key, required this.repo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final myMaidsBloc = BlocProvider.of<MyMaidsBloc>(context);
-    if (!(myMaidsBloc.state is MyMaidsLoadSuccess)) {
-      myMaidsBloc.getMyMaids();
+    final postsRating = BlocProvider.of<PostsRating>(context);
+    if (!(postsRating.state is MyPostsLoadSuccess)) {
+      postsRating.getMyPosts();
     }
 
     return Scaffold(
@@ -25,9 +25,9 @@ class MyMaids extends StatelessWidget {
         ),
       ),
       body: Container(
-        child: BlocBuilder<MyMaidsBloc, MyMaidsState>(
-          builder: (BuildContext context, MyMaidsState state) {
-            if (state is MyMaidsLoading || state is MyMaidsInit) {
+        child: BlocBuilder<PostsRating, MyPostsRatingState>(
+          builder: (BuildContext context, MyPostsRatingState state) {
+            if (state is MyPostsLoading || state is MyPostsInit) {
               return Center(
                 child: Container(
                   child: Column(
@@ -47,7 +47,7 @@ class MyMaids extends StatelessWidget {
                   ),
                 ),
               );
-            } else if (state is MaidLoadingFailure) {
+            } else if (state is PostLoadingFailure) {
               return Center(
                 child: Container(
                   child: Column(
@@ -68,26 +68,26 @@ class MyMaids extends StatelessWidget {
                   ),
                 ),
               );
-            } else if (state is MyMaidsLoadSuccess) {
+            } else if (state is MyPostsLoadSuccess) {
               return ListView.builder(
-                itemCount: (state as MyMaidsLoadSuccess).myMaids.length,
+                itemCount: (state as MyPostsLoadSuccess).myPosts.length,
                 itemBuilder: (context, index) {
                   return ListTile(
                     onTap: () {
                       Navigator.of(context).pushNamed(MaidProfileScreen.Route,
                           arguments: {
-                            "maid": (state as MyMaidsLoadSuccess).myMaids[index]
+                            "maid": (state as MyPostsLoadSuccess).myPosts[index]
                           });
                     },
-                    leading: (state as MyMaidsLoadSuccess)
-                                .myMaids[index]
+                    leading: (state as MyPostsLoadSuccess)
+                                .myPosts[index]
                                 .user!
                                 .imageUrl !=
                             ""
                         ? Image.network(
                             StaticDataStore.URL +
-                                (state as MyMaidsLoadSuccess)
-                                    .myMaids[index]
+                                (state as MyPostsLoadSuccess)
+                                    .myPosts[index]
                                     .user!
                                     .imageUrl,
                             height: 65,
@@ -98,12 +98,12 @@ class MyMaids extends StatelessWidget {
                             height: 65,
                             width: 65,
                           ), //
-                    title: Text((state as MyMaidsLoadSuccess)
-                        .myMaids[index]
+                    title: Text((state as MyPostsLoadSuccess)
+                        .myPosts[index]
                         .user!
                         .username),
                     subtitle: Text(
-                      (state as MyMaidsLoadSuccess).myMaids[index].user!.email,
+                      (state as MyPostsLoadSuccess).myPosts[index].user!.email,
                     ),
                   );
                 },

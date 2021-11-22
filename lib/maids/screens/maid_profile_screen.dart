@@ -12,15 +12,15 @@ class _MaidProfileScreenState extends State<MaidProfileScreen> {
   Maid? maid;
 
   bool maidExistsInMyMaidsList(BuildContext contex, String maidID) {
-    if (BlocProvider.of<MyMaidsBloc>(contex).state is MyMaidsLoadSuccess) {
+    if (BlocProvider.of<PostsRating>(contex).state is MyPostsLoadSuccess) {
       for (int k = 0;
           k <
-              (BlocProvider.of<MyMaidsBloc>(contex).state as MyMaidsLoadSuccess)
-                  .myMaids
+              (BlocProvider.of<PostsRating>(contex).state as MyPostsLoadSuccess)
+                  .myPosts
                   .length;
           k++) {
-        if ((BlocProvider.of<MyMaidsBloc>(contex).state as MyMaidsLoadSuccess)
-                .myMaids[k]!
+        if ((BlocProvider.of<PostsRating>(contex).state as MyPostsLoadSuccess)
+                .myPosts[k]!
                 .user!
                 .id ==
             maidID) {
@@ -57,7 +57,7 @@ class _MaidProfileScreenState extends State<MaidProfileScreen> {
       body: Container(
         // width: double.infinity,
         // height: MediaQuery.of(context).size.height * 0.8,
-        child: BlocBuilder<MyMaidsBloc, MyMaidsState>(
+        child: BlocBuilder<PostsRating, MyPostsRatingState>(
           builder: (context, state) {
             return ListView(
               children: [

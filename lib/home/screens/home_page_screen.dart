@@ -28,9 +28,9 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     // AdminMaidsBloc
     if (StaticDataStore.role == Role.client) {
-      final myMaidsBloc = BlocProvider.of<MyMaidsBloc>(context);
-      if (!(myMaidsBloc.state is MyMaidsLoadSuccess)) {
-        myMaidsBloc.getMyMaids();
+      final myPostRatingBloc = BlocProvider.of<PostsRating>(context);
+      if (!(myPostRatingBloc.state is MyPostsLoadSuccess)) {
+        myPostRatingBloc.getMyPosts();
       }
     }
     if (StaticDataStore.role == Role.admin) {

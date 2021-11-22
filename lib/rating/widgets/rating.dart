@@ -29,7 +29,7 @@ class Rating extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              BlocProvider.of<MyMaidsBloc>(context).rateMaid(1, maidID);
+              BlocProvider.of<PostsRating>(context).ratePost(1, maidID);
             },
             child: Icon(
                 (this.rating).round() >= 1 ? Icons.star : Icons.star_border,
@@ -38,7 +38,7 @@ class Rating extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              BlocProvider.of<MyMaidsBloc>(context).rateMaid(2, maidID);
+              BlocProvider.of<PostsRating>(context).ratePost(2, maidID);
             },
             child: Icon(
                 (this.rating).round() >= 2 ? Icons.star : Icons.star_border,
@@ -47,7 +47,7 @@ class Rating extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              BlocProvider.of<MyMaidsBloc>(context).rateMaid(3, maidID);
+              BlocProvider.of<PostsRating>(context).ratePost(3, maidID);
             },
             child: Icon(
                 (this.rating).round() >= 3 ? Icons.star : Icons.star_border,
@@ -56,7 +56,7 @@ class Rating extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              BlocProvider.of<MyMaidsBloc>(context).rateMaid(4, maidID);
+              BlocProvider.of<PostsRating>(context).ratePost(4, maidID);
             },
             child: Icon(
                 (this.rating).round() >= 4 ? Icons.star : Icons.star_border,
@@ -65,7 +65,7 @@ class Rating extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              BlocProvider.of<MyMaidsBloc>(context).rateMaid(5, maidID);
+              BlocProvider.of<PostsRating>(context).ratePost(5, maidID);
             },
             child: Icon(
                 (this.rating).round() >= 5 ? Icons.star : Icons.star_border,

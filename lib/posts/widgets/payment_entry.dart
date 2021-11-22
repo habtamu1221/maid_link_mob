@@ -33,7 +33,7 @@ Future<void> paymentEntry(BuildContext context, String maidid) async {
           FlatButton(
             onPressed: () async {
               // print("I Am called .... ");
-              BlocProvider.of<MyMaidsBloc>(context).payForMaidInformation(
+              BlocProvider.of<PostsRating>(context).payForPostInformation(
                   accountController.text, passwordController.text, maidid);
               Navigator.pop(conta);
             },

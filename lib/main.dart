@@ -33,7 +33,7 @@ void main() {
             },
           ),
           BlocProvider(create: (contxt) {
-            return MyMaidsBloc(MyMaidsRepo(MyMaidsProvider()));
+            return PostsRating(MyRatingRepo(MyRatingProvider()));
           }),
           // AdminMaidsBloc
           BlocProvider(create: (contxt) {
@@ -91,7 +91,7 @@ class MainApp extends StatelessWidget {
           return MaidProfileScreen();
         },
         MyMaids.Route: (BuildContext context) {
-          return MyMaids(repo: MyMaidsRepo(MyMaidsProvider()));
+          return MyMaids(repo: MyRatingRepo(MyRatingProvider()));
         },
         EditProfileScreen.Route: (BuildContext context) {
           return EditProfileScreen();

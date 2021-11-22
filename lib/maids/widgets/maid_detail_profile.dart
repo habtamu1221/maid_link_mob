@@ -10,12 +10,6 @@ class MaidProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      // height: 300,
-
-      // padding: EdgeInsets.all(10),
-      // margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-      // width: double.infinity,
-      // height: 800,
       child: Column(
         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -63,9 +57,7 @@ class MaidProfile extends StatelessWidget {
                         (e) => Text("${e}"),
                       )
                       .toList(),
-                ]
-                // },
-                ),
+                ]),
           )
         ],
       ),

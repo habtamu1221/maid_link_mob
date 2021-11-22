@@ -1,10 +1,10 @@
 import '../../libs.dart';
 
-class MyMaidsRepo {
-  final MyMaidsProvider provider;
-  MyMaidsRepo(this.provider);
+class MyRatingRepo {
+  final MyRatingProvider provider;
+  MyRatingRepo(this.provider);
 
-  Future<List<Maid>?> getMyMaids() async {
+  Future<List<Maid>?> getMyPosts() async {
     final maids = await this.provider.getMyMaids();
     List<Maid> listMaids = [];
     if (maids != null && maids.length > 0) {
@@ -19,7 +19,7 @@ class MyMaidsRepo {
     return [];
   }
 
-  Future<Maid?> payForMaidInformation(
+  Future<Maid?> payForPostInformation(
       String account, String password, String maidID) async {
     final maid =
         await this.provider.payForMaidInformation(account, password, maidID);
@@ -29,7 +29,7 @@ class MyMaidsRepo {
     return null;
   }
 
-  Future<RateResult?> rateMaid(int rate, String maidID) async {
+  Future<RateResult?> ratePost(int rate, String maidID) async {
     final result = await this.provider.rateMaid(rate, maidID);
     if (result != null) {
       return RateResult.fromJson(result);
