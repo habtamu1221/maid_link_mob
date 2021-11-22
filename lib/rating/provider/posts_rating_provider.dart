@@ -1,12 +1,12 @@
 import 'dart:convert';
 import '../../libs.dart';
 
-class MyMaidsProvider {
+class MyRatingProvider {
   static String HOST = StaticDataStore.HOST;
   static int PORT = StaticDataStore.PORT;
   static Client client = Client();
 
-  MyMaidsProvider();
+  MyRatingProvider();
 
   Future<List<Map<String, dynamic>>?> getMyMaids() async {
     final headers = {"Authorization": "Bearer ${StaticDataStore.TOKEN}"};

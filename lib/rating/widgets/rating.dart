@@ -29,7 +29,8 @@ class Rating extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: () {
-              BlocProvider.of<PostsRating>(context).ratePost(1, maidID);
+              BlocProvider.of<PostsRating>(context)
+                  .add(RatePostEvent(rate: 1, postID: maidID));
             },
             child: Icon(
                 (this.rating).round() >= 1 ? Icons.star : Icons.star_border,
@@ -38,7 +39,8 @@ class Rating extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              BlocProvider.of<PostsRating>(context).ratePost(2, maidID);
+              BlocProvider.of<PostsRating>(context)
+                  .add(RatePostEvent(rate: 2, postID: maidID));
             },
             child: Icon(
                 (this.rating).round() >= 2 ? Icons.star : Icons.star_border,
@@ -47,7 +49,8 @@ class Rating extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              BlocProvider.of<PostsRating>(context).ratePost(3, maidID);
+              BlocProvider.of<PostsRating>(context)
+                  .add(RatePostEvent(rate: 3, postID: maidID));
             },
             child: Icon(
                 (this.rating).round() >= 3 ? Icons.star : Icons.star_border,
@@ -56,7 +59,8 @@ class Rating extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              BlocProvider.of<PostsRating>(context).ratePost(4, maidID);
+              BlocProvider.of<PostsRating>(context)
+                  .add(RatePostEvent(rate: 4, postID: maidID));
             },
             child: Icon(
                 (this.rating).round() >= 4 ? Icons.star : Icons.star_border,
@@ -65,7 +69,8 @@ class Rating extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              BlocProvider.of<PostsRating>(context).ratePost(5, maidID);
+              BlocProvider.of<PostsRating>(context)
+                  .add(RatePostEvent(rate: 5, postID: maidID));
             },
             child: Icon(
                 (this.rating).round() >= 5 ? Icons.star : Icons.star_border,

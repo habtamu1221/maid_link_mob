@@ -9,9 +9,8 @@ class MyMaids extends StatelessWidget {
   Widget build(BuildContext context) {
     final postsRating = BlocProvider.of<PostsRating>(context);
     if (!(postsRating.state is MyPostsLoadSuccess)) {
-      postsRating.getMyPosts();
+      postsRating.add(PostsLoadEvent());
     }
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0,

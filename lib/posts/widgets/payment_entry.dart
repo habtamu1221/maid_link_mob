@@ -33,8 +33,8 @@ Future<void> paymentEntry(BuildContext context, String maidid) async {
           FlatButton(
             onPressed: () async {
               // print("I Am called .... ");
-              BlocProvider.of<PostsRating>(context).payForPostInformation(
-                  accountController.text, passwordController.text, maidid);
+              BlocProvider.of<PostsRating>(context).add(PayToRatePostEvent(
+                  accountController.text, passwordController.text, maidid));
               Navigator.pop(conta);
             },
             child: Text(

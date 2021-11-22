@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (StaticDataStore.role == Role.client) {
       final myPostRatingBloc = BlocProvider.of<PostsRating>(context);
       if (!(myPostRatingBloc.state is MyPostsLoadSuccess)) {
-        myPostRatingBloc.getMyPosts();
+        myPostRatingBloc.add(PostsLoadEvent());
       }
     }
     if (StaticDataStore.role == Role.admin) {
