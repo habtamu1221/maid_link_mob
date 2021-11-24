@@ -231,8 +231,8 @@ class _RegisterClientState extends State<RegisterClient> {
                   final state = await BlocProvider.of<UserBloc>(context)
                       .loginUser(emailController.text, passwordController.text);
                   if (state is UserLoggedIn) {
-                    BlocProvider.of<ThemeBloc>(context)
-                        .setTheme(StaticDataStore.role.index);
+                    BlocProvider.of<ThemeBloc>(context).add(ThemeColorEvent
+                        .values[(StaticDataStore.role.index) + 1]);
                     Navigator.of(context).pushNamedAndRemoveUntil(
                         HomeScreen.ROUTE, (route) => false);
                   }

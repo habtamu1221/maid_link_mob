@@ -1,6 +1,3 @@
-// import '../../libs.dart';
-// import 'dart:ui';
-
 import 'package:maidlink/maids/model/maid.dart';
 import 'package:maidlink/posts/model/work_model.dart';
 
@@ -52,9 +49,9 @@ List<Work> works = [
   ),
 ];
 
-Maid maid = Maid(
+Maid dummymaid = Maid(
   address: "Addis Ababa Ethiopia ",
-  bio: "Samuael adnew birhane kassaw ",
+  bio: "Habtamu Girma Belachew kassaw ",
   carrers: [
     "one",
     "Two",
@@ -74,7 +71,7 @@ Maid maid = Maid(
   rates: 4.78,
   user: DUser(
     id: "6125f135e831b1715dcb7056",
-    email: "samuaeladnew@gmail.com",
+    email: "habtamugirma@gmail.com",
     imageUrl: "images/posts/RrSeQ.png",
     role: 0,
     username: "Samuael",

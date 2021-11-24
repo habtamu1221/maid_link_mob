@@ -21,7 +21,7 @@ class Admin extends User {
       username: json['username'],
       email: json['email'],
       imageUrl: json["image_url"],
-      role: int.parse(json["role"]),
+      role: int.parse("${json["role"]}"),
     );
   }
 

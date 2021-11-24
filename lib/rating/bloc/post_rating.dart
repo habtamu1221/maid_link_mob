@@ -46,6 +46,8 @@ class PostsRating extends Bloc<PostRatingEvent,
       yield (MyPostsLoading());
       final Posts = await this.repo.getMyPosts();
       yield (MyPostsLoadSuccess(Posts!));
+    } else if (event is PostRatingInitEvent) {
+      yield (event.state);
     }
   }
 }

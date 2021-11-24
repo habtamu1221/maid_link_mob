@@ -38,7 +38,8 @@ Future<void> activateAccount(BuildContext context) async {
                     AuthScreen.Route, (route) => false);
                 StaticDataStore.TOKEN = "";
                 StaticDataStore.role = Role.admin;
-                context.watch<ThemeBloc>().setTheme(1);
+                BlocProvider.of<ThemeBloc>(context)
+                    .add(ThemeColorEvent.values[1]);
                 context.watch<UserBloc>().setState(UserInit());
                 return;
               } else {

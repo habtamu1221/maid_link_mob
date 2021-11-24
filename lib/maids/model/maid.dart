@@ -12,6 +12,7 @@ class Maid extends User {
   late List<String> ratedBy;
   late List<Work> works;
   DUser? user;
+
   Maid({
     required this.phone,
     required this.address,

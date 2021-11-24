@@ -57,7 +57,8 @@ class _LoginState extends State<Login> {
     final state = await userBlocProvider.loginUser(
         emailController.text, passwordController.text);
     if (state is UserLoggedIn) {
-      BlocProvider.of<ThemeBloc>(context).setTheme(StaticDataStore.role.index);
+      BlocProvider.of<ThemeBloc>(context)
+          .add(ThemeColorEvent.values[(StaticDataStore.role.index) + 1]);
       Navigator.of(context)
           .pushNamedAndRemoveUntil(HomeScreen.ROUTE, (route) => false);
       if (StaticDataStore.role == 1) {

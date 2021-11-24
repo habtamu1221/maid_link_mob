@@ -1,1 +1,1 @@
-export "rate_result.dart";
+export 'rate_result_model.dart';

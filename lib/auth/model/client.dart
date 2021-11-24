@@ -20,7 +20,7 @@ class DClient extends User {
       email: json["email"],
       imageUrl: json["image_url"],
       role: int.parse(
-        json['role'],
+        "${json['role']}",
       ),
     );
   }

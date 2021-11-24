@@ -1,19 +1,11 @@
 import '../../libs.dart';
 
-class ThemeBloc extends Cubit<ThemeData?> {
+enum ThemeColorEvent { Green, Orange, Blue }
+
+class ThemeBloc extends Bloc<ThemeColorEvent, ThemeData> {
   int index = 0;
 
-  static ThemeData? theme = ThemeData(
-    primarySwatch: Colors.orange,
-    textTheme: TextTheme(
-      body1: TextStyle(
-        color: Colors.black,
-      ),
-    ),
-    canvasColor: Colors.white,
-  );
-
-  List<ThemeData> themes = [
+  static List<ThemeData> themes = [
     ThemeData(
       primarySwatch: Colors.green,
       textTheme: TextTheme(
@@ -33,7 +25,7 @@ class ThemeBloc extends Cubit<ThemeData?> {
       canvasColor: Colors.white,
     ),
     ThemeData(
-      primarySwatch: Colors.orange,
+      primarySwatch: Colors.blue,
       textTheme: TextTheme(
         body1: TextStyle(
           color: Colors.black,
@@ -42,11 +34,19 @@ class ThemeBloc extends Cubit<ThemeData?> {
       canvasColor: Colors.white,
     )
   ];
-  ThemeBloc() : super(theme);
-
-  void setTheme(int index) {
-    if (index >= 3) return;
-    theme = themes[index];
+  static ThemeData theme = themes[1];
+  ThemeBloc() : super(theme) {
     emit(theme);
+  }
+
+  @override
+  Stream<ThemeData> mapEventToState(ThemeColorEvent event) async* {
+    if (event == ThemeColorEvent.Green) {
+      yield themes[0];
+    } else if (event == ThemeColorEvent.Orange) {
+      yield themes[1];
+    } else {
+      yield themes[2];
+    }
   }
 }
