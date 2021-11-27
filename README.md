@@ -10,7 +10,8 @@ Advanced Mobile Programming Project
 2. CRUD on Maids 
 3. CRUD on ADMINS 
 4. CRUD on Users( Clients or Employers )
-5. Rating
+5. Rating  AND CRUD 
+6. Posts CRUD
 
 
 
