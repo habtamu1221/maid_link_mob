@@ -60,6 +60,7 @@ class _SplashAppState extends State<SplashApp> {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: Container(
+        key: Key("SplashScreenContainerWithRandomKey"),
         decoration: BoxDecoration(
           color: Theme.of(context).canvasColor,
         ),

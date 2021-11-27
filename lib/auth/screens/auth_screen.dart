@@ -51,6 +51,7 @@ class _AuthScreenState extends State<AuthScreen> {
         elevation: 0,
       ),
       body: Container(
+        key: Key("Main Container"),
         child: Column(children: [
           Expanded(
             flex: index,
@@ -68,10 +69,11 @@ class _AuthScreenState extends State<AuthScreen> {
                     bottomRight: Radius.elliptical(100, 50),
                   )),
               child: Container(
-                child: Column(children: [
-                  Padding(
-                    padding: EdgeInsets.all(5),
-                    child: Container(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(5),
+                      child: Container(
                         height: MediaQuery.of(context).size.height * 0.1,
                         child: Column(
                           children: [
@@ -90,9 +92,10 @@ class _AuthScreenState extends State<AuthScreen> {
                             ),
                           ],
                         ),
-                        ),
-                  ),
-                ] , ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

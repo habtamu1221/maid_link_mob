@@ -7,7 +7,8 @@ enum Role {
 class StaticDataStore {
   static List<String> roles = ["Admin", "Maid", "Client"];
   static String SCHEME = "http://";
-  static String HOST = "192.168.43.207";
+  static String HOST = "10.5.202.116";
+  // static String HOST = "192.168.43.207";
   static int PORT = 8080;
   static String URL = SCHEME + HOST + ":$PORT/";
   static String TOKEN = "";

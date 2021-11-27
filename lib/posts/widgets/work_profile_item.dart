@@ -354,21 +354,3 @@ class _WorkProfileItemState extends State<WorkProfileItem> {
     );
   }
 }
-
-
-/*// TextField(
-              //       controller: this.emailController,
-              //       keyboardType: TextInputType.emailAddress,
-              //       cursorColor: Theme.of(context).cursorColor,
-              //       decoration: InputDecoration(
-              //         icon: Icon(Icons.email),
-              //         labelText: ' Email ',
-              //         labelStyle: TextStyle(
-              //           color: Theme.of(context).primaryColorLight,
-              //         ),
-              //         enabledBorder: UnderlineInputBorder(
-              //           borderSide: BorderSide(
-              //               color: Theme.of(context).primaryColorLight),
-              //         ),
-              //       ),
-              //     ),*/

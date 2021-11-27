@@ -24,7 +24,6 @@ class _LoginState extends State<Login> {
   loginPressed(UserBloc userBlocProvider) async {
     loginProgressColor = Colors.green;
     if (emailController.text == "" && passwordController.text == "") {
-      print("Section called ...");
       setState(() {
         this.loginProgressMessage = "please enter email and password";
         this.loginProgressColor = Colors.red;

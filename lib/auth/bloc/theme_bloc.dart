@@ -1,7 +1,5 @@
 import '../../libs.dart';
 
-enum ThemeColorEvent { Green, Orange, Blue }
-
 class ThemeBloc extends Bloc<ThemeColorEvent, ThemeData> {
   int index = 0;
 
