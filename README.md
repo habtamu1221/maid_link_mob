@@ -19,7 +19,6 @@ Advanced Mobile Programming Project
 1. Habtamu Girma       ATR/2402/09
 2. Abel Teshome        ATR/5304/09
 3. Amanuel Bullo       ATR/5138/09
-4. Bezawit Dereje      ATE/5135/09
-5. Elbethel Solomon    ATE/5149/09
+4. Elbethel Solomon    ATE/5149/09
 
 
